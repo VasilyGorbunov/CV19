@@ -27,9 +27,15 @@
     </Menu>
     <!--#endregion-->
 
-
     <!--#region Status Bar -->
-    <StatusBar DockPanel.Dock="Bottom"></StatusBar>
+    <StatusBar DockPanel.Dock="Bottom">
+      <StatusBarItem MinWidth="150" MaxWidth="300">
+        <TextBlock Text="Status Text"/>
+      </StatusBarItem>
+      <StatusBarItem>
+        <ProgressBar Width="320" Height="14" Value="72" Margin="10 0 0 0"/>
+      </StatusBarItem>
+    </StatusBar>
     <!--#endregion-->
 
     <!--#region Tab Control -->
@@ -45,6 +51,12 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
+
+          <GridSplitter Grid.Column="0" Grid.RowSpan="2"
+                        HorizontalAlignment="Right"
+                        Width="3" 
+                        Background="DarkOliveGreen"
+                        />
 
           <Rectangle Grid.Row="0" Grid.Column="0"
                      Margin="15"
