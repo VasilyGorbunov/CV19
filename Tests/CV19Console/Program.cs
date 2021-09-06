@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -31,12 +33,19 @@ namespace CV19Console
       }
     }
 
+    private static DateTime[] GetDates() => GetDataLines()
+      .First()
+      .Split(',')
+      .Skip(4)
+      .Select(s => DateTime.Parse(s, CultureInfo.InvariantCulture))
+      .ToArray();
+    
+
     static void  Main(string[] args)
     {
-      foreach (var data_line in GetDataLines())
-      {
-        Console.WriteLine(data_line);
-      }
+      var dates = GetDates();
+
+      Console.WriteLine(string.Join("\r\n", dates));
       
       Console.ReadLine();
     }
