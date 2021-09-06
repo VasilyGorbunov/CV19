@@ -19,7 +19,7 @@
     <!--#region Main Menu -->
     <Menu DockPanel.Dock="Top" Margin="0 0 0 10">
       <MenuItem Header="Файл">
-        <MenuItem Header="Выход"></MenuItem>
+        <MenuItem Header="Выход"/>
       </MenuItem>
       <MenuItem Header="Помощь">
         <MenuItem Header="О программе"/>
@@ -30,7 +30,7 @@
     <!--#region Status Bar -->
     <StatusBar DockPanel.Dock="Bottom">
       <StatusBarItem MinWidth="150" MaxWidth="300">
-        <TextBlock Text="Status Text"/>
+        <TextBlock Text="{Binding Status}"/>
       </StatusBarItem>
       <StatusBarItem>
         <ProgressBar Width="320" Height="14" Value="72" Margin="10 0 0 0"/>
@@ -40,8 +40,8 @@
 
     <!--#region Tab Control -->
     <TabControl>
-      <!--#region Вкладка 1 -->
-      <TabItem Header="Вкладка 1">
+      <!--#region Фигуры -->
+      <TabItem Header="Фигуры">
         <Grid>
           <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
