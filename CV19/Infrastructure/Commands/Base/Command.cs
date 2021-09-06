@@ -15,7 +15,6 @@ namespace CV19.Infrastructure.Commands.Base
     {
       add => CommandManager.RequerySuggested += value;
       remove => CommandManager.RequerySuggested -= value;
-
     }
   }
 }
