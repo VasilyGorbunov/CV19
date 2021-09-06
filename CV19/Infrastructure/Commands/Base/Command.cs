@@ -1,7 +1,21 @@
-﻿namespace CV19.Infrastructure.Commands.Base
+﻿#nullable enable
+using System;
+using System.Windows.Input;
+
+namespace CV19.Infrastructure.Commands.Base
 {
-  public class Command
+  public abstract class Command: ICommand
   {
+    public abstract bool CanExecute(object? parameter);
+
+    public abstract void Execute(object? parameter);
     
+
+    public event EventHandler? CanExecuteChanged
+    {
+      add => CommandManager.RequerySuggested += value;
+      remove => CommandManager.RequerySuggested -= value;
+
+    }
   }
 }
