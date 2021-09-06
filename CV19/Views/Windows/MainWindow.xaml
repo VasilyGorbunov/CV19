@@ -4,11 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:CV19.ViewModels"
+        xmlns:cmd="clr-namespace:CV19.Infrastructure.Commands"
         xmlns:l="clr-namespace:CV19"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         Height="700" 
         Width="1200">
+
+  <Window.Resources>
+    <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
+  </Window.Resources>
+
+  <Window.InputBindings>
+    <KeyBinding Modifiers="Control" Key="Q">
+      <KeyBinding.Command>
+        <cmd:CloseApplicationCommand/>
+      </KeyBinding.Command>
+    </KeyBinding>
+  </Window.InputBindings>
 
   <Window.DataContext>
     <vm:MainWindowViewModel/>
@@ -19,7 +32,12 @@
     <!--#region Main Menu -->
     <Menu DockPanel.Dock="Top" Margin="0 0 0 10">
       <MenuItem Header="Файл">
-        <MenuItem Header="Выход"/>
+        <MenuItem Header="Выход 1" Command="{StaticResource CloseApplicationCommand}"/>
+        <MenuItem Header="Выход 2">
+          <MenuItem.Command>
+            <cmd:CloseApplicationCommand/>
+          </MenuItem.Command>
+        </MenuItem>
       </MenuItem>
       <MenuItem Header="Помощь">
         <MenuItem Header="О программе"/>
@@ -65,13 +83,16 @@
                      Stroke="DarkOrange"
                      RadiusX="8"
                      RadiusY="8"/>
-          
+
           <Ellipse Grid.Row="0" Grid.Column="1"
                    Margin="15"
                    Fill="DarkOrange"
                    Stroke="RoyalBlue"
-                   StrokeThickness="5"
-                   />
+                   StrokeThickness="5">
+            <Ellipse.InputBindings>
+              <MouseBinding Command="{Binding CloseApplicationCommand}" MouseAction="LeftDoubleClick"/>
+            </Ellipse.InputBindings>
+          </Ellipse>
 
         </Grid>
       </TabItem>
