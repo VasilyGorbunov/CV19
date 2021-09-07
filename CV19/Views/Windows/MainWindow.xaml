@@ -73,6 +73,22 @@
 
     <!--#region Tab Control -->
     <TabControl SelectedIndex="{Binding SelectedPageIndex}">
+      <!--#region Студенты-->
+      <TabItem>
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <fa:SvgAwesome Icon="Solid_PeopleCarry" Height="14" Foreground="Goldenrod"/>
+            <TextBlock Margin="5 0 0 0" Text="Студенты"/>
+          </StackPanel>
+        </TabItem.Header>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
+        </Grid>
+      </TabItem>
+      <!--#endregion-->
       <!--#region График -->
       <TabItem>
         <TabItem.Header>
