@@ -17,6 +17,23 @@ namespace CV19.ViewModels
 
     public ObservableCollection<Group> Groups { get; }
 
+    public object[] CompositeCollection { get; }
+
+    #region Выбранный непонятный элемент
+
+    private object _selectedCompositeValue;
+
+    /// <summary>
+    /// Выбранный непонятный элемент
+    /// </summary>
+    public object SelectedCompositeValue
+    {
+      get => _selectedCompositeValue;
+      set => Set(ref _selectedCompositeValue, value);
+    }
+
+    #endregion
+
     #region Выбранная группа
     private Group _selectedGroup;
     /// <summary>
@@ -136,7 +153,7 @@ namespace CV19.ViewModels
 
       var groups = Enumerable.Range(1, 50).Select(i => new Group
       {
-        Name = $"Группа №{i}",
+        Name = $"Группа № {i}",
         Students = new ObservableCollection<Student>(students)
       });
       Groups = new ObservableCollection<Group>(groups);
@@ -156,6 +173,17 @@ namespace CV19.ViewModels
       }
 
       TestDataPoints = data_points;
+      #endregion
+
+      #region Composite Collection
+      var data_list = new List<object>();
+      data_list.Add("Hello world");
+      data_list.Add(42);
+      var group = Groups[1];
+      data_list.Add(group);
+      data_list.Add(group.Students[0]);
+
+      CompositeCollection = data_list.ToArray();
       #endregion
 
       #region Команды

@@ -7,7 +7,8 @@
         xmlns:cmd="clr-namespace:CV19.Infrastructure.Commands"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:oxy="http://oxyplot.org/wpf"
-        xmlns:l="clr-namespace:CV19"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         Height="700" 
@@ -73,6 +74,55 @@
 
     <!--#region Tab Control -->
     <TabControl SelectedIndex="{Binding SelectedPageIndex}">
+      <!--#region Разнородные данные-->
+      <TabItem>
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <fa:SvgAwesome Height="12" Icon="Solid_Database" Foreground="Green"/>
+            <TextBlock Text="Разнородные данные" Margin="5 0 0 0"/>
+          </StackPanel>
+        </TabItem.Header>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
+
+          <GroupBox Grid.Column="0">
+            <GroupBox.Header>
+              <TextBlock Text="Элементы"/>
+            </GroupBox.Header>
+            <GroupBox.Resources>
+              <DataTemplate DataType="{x:Type decanat:Group}">
+                <TextBlock Text="{Binding Name}"/>
+              </DataTemplate>
+              <DataTemplate DataType="{x:Type decanat:Student}">
+                <TextBlock Text="{Binding Name, StringFormat=Студент {0}}"/>
+              </DataTemplate>
+              <DataTemplate DataType="{x:Type sys:String}">
+                <TextBlock>
+                  <Run Foreground="DarkRed" FontWeight="DemiBold">Строка:</Run> <TextBlock Text="{Binding}"/>
+                </TextBlock>
+              </DataTemplate>
+              <DataTemplate DataType="{x:Type sys:Int32}">
+                <TextBlock>
+                  <Run Foreground="DarkRed" FontWeight="DemiBold">Число:</Run> <TextBlock Text="{Binding}"/>
+                </TextBlock>
+              </DataTemplate>
+            </GroupBox.Resources>
+
+            <ListBox ItemsSource="{Binding CompositeCollection}"
+                     SelectedItem="{Binding SelectedCompositeValue}"
+                     SelectedIndex="3"/>
+          </GroupBox>
+
+          <GroupBox Grid.Column="1" Header="Выбранный элемент">
+            <ContentControl Content="{Binding SelectedCompositeValue}"/>
+          </GroupBox>
+        </Grid>
+      </TabItem>
+      <!--#endregion-->
+
       <!--#region Студенты-->
       <TabItem>
         <TabItem.Header>
@@ -89,9 +139,18 @@
 
           <GroupBox Grid.Column="0" Header="Группы">
             <ListBox ItemsSource="{Binding Groups}"
-                     DisplayMemberPath="Name"
                      SelectedItem="{Binding SelectedGroup}"
-                     SelectedIndex="0"/>
+                     SelectedIndex="0">
+              <ListBox.ItemTemplate>
+                <DataTemplate DataType="decanat:Group">
+                  <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Text="{Binding Students.Count, StringFormat=[Студентов: {0}]}"
+                               Margin="10 0 0 0"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
           </GroupBox>
 
           <GroupBox Grid.Column="1" 
@@ -99,30 +158,43 @@
                     >
             <DataGrid ItemsSource="{Binding SelectedGroup.Students}"
                       AutoGenerateColumns="False"
-                      IsReadOnly="True"
+                      CanUserAddRows="False"
                       GridLinesVisibility="Vertical"
                       VerticalGridLinesBrush="LightGray">
               <DataGrid.Columns>
                 <DataGridTextColumn Header="Фамилия" 
-                                    Binding="{Binding Surname}"/>
+                                    Binding="{Binding Surname}"
+                                    IsReadOnly="True"/>
                 <DataGridTextColumn Header="Имя" 
-                                    Binding="{Binding Name}"/>
+                                    Binding="{Binding Name}"
+                                    IsReadOnly="True"/>
                 <DataGridTextColumn Header="Отчество" 
-                                    Binding="{Binding Patronymic}"/>
+                                    Binding="{Binding Patronymic}"
+                                    IsReadOnly="True"/>
                 <DataGridTextColumn Header="Рейтинг"
-                                    Binding="{Binding Rating}"/>
+                                    Binding="{Binding Rating}"
+                                    IsReadOnly="True"/>
                 <!--<DataGridTextColumn Header="Дата рождения"
                                     Binding="{Binding Birthday, StringFormat=dd.MM.yyyy}"/>-->
                 <DataGridTemplateColumn Header="Дата рождения">
                   <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate></DataTemplate>
+                    <DataTemplate DataType="decanat:Student">
+                      <TextBlock Text="{Binding Birthday, StringFormat=dd.MM.yyyy}"/>
+                    </DataTemplate>
                   </DataGridTemplateColumn.CellTemplate>
+                  <DataGridTemplateColumn.CellEditingTemplate>
+                    <DataTemplate DataType="decanat:Student">
+                      <DatePicker SelectedDate="{Binding Birthday}"/>
+                    </DataTemplate>
+                  </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Группа"
-                                    Binding="{Binding DataContext.SelectedGroup.Name, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                    Binding="{Binding DataContext.SelectedGroup.Name, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                    IsReadOnly="True"/>
                 <DataGridTextColumn Header="Заметки"
                                     Binding="{Binding Description}"
-                                    Width="*"/>
+                                    Width="*"
+                                    IsReadOnly="True"/>
               </DataGrid.Columns>
             </DataGrid>
           </GroupBox>
