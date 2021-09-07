@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 using CV19.Infrastructure.Commands;
+using CV19.Models;
 using CV19.ViewModels.Base;
 
 namespace CV19.ViewModels
@@ -8,6 +11,31 @@ namespace CV19.ViewModels
   public class MainWindowViewModel: ViewModel
   {
     #region Свойства
+
+    #region Номер выбранной вкладки
+    private int _selectedPageIndex = 0;
+    /// <summary>
+    /// Номер выбранной вкладки
+    /// </summary>
+    public int SelectedPageIndex
+    {
+      get => _selectedPageIndex;
+      set => Set(ref _selectedPageIndex, value);
+    } 
+    #endregion
+
+    #region Тестовый набор данных для визуализации графика
+
+    private IEnumerable<DataPoint> _testDataPoints;
+    /// <summary>
+    /// Тестовый набор данных для визуализации графика
+    /// </summary>
+    public IEnumerable<DataPoint> TestDataPoints { 
+      get => _testDataPoints; 
+      set => Set(ref _testDataPoints, value);
+    }
+
+    #endregion
 
     #region Заголовок окна
     private string _title = "Анализ статистики CV19";
@@ -25,6 +53,7 @@ namespace CV19.ViewModels
     #region Статус программы
 
     private string _status = "Готов!";
+
     /// <summary>
     /// Статус программы
     /// </summary>
@@ -51,7 +80,23 @@ namespace CV19.ViewModels
       Application.Current.Shutdown();
     }
 
-    private bool CanCloseApplicationCommandExecute(object p) => true; 
+    private bool CanCloseApplicationCommandExecute(object p) => true;
+    #endregion
+
+    #region ChangeTabIndexCommand - Смена tab вкладки
+    public ICommand ChangeTabIndexCommand { get; set; }
+    /// <summary>
+    /// Смена tab вкладки
+    /// </summary>
+    /// <param name="p"></param>
+    /// <returns></returns>
+    private bool CanChangeTabIndexCommandExecute(object p) => SelectedPageIndex >= 0;
+
+    private void OnChangeTabIndexCommandExecuted(object p)
+    {
+      if (p is null) return;
+      SelectedPageIndex += Convert.ToInt32(p);
+    } 
     #endregion
 
     #endregion
@@ -60,11 +105,31 @@ namespace CV19.ViewModels
 
     public MainWindowViewModel()
     {
+      #region Тестовый набор данных для визуализации графика
+      var data_points = new List<DataPoint>((int) (360 / 0.1));
+      for (var x = 0d; x <= 360; x += 0.1)
+      {
+        const double to_rad = Math.PI / 180;
+        var y = Math.Sin(x * to_rad);
+        data_points.Add(new DataPoint
+        {
+          XValue = x,
+          YValue = y
+        });
+      }
+
+      TestDataPoints = data_points;
+      #endregion
+
       #region Команды
 
       CloseApplicationCommand = new LambdaCommand(
         OnCloseApplicationCommandExecuted, 
         CanCloseApplicationCommandExecute);
+
+      ChangeTabIndexCommand = new LambdaCommand(
+        OnChangeTabIndexCommandExecuted,
+        CanChangeTabIndexCommandExecute);
 
       #endregion
     }
