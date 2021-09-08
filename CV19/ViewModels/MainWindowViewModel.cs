@@ -145,7 +145,7 @@ namespace CV19.ViewModels
       var new_group = new Group
       {
         Name = $"Группа №{group_max_index}",
-        Students = new List<Student>()
+        Students = new ObservableCollection<Student>()
       };
 
       Groups.Add(new_group);

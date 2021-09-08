@@ -165,11 +165,19 @@
                        SelectedIndex="0">
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="decanat:Group">
+                    
                     <StackPanel Orientation="Horizontal">
-                      <TextBlock Text="{Binding Name}"/>
+                      <TextBlock Text="{Binding Name}" x:Name="TextView"/>
                       <TextBlock Text="{Binding Students.Count, StringFormat=[Студентов: {0}]}"
                                Margin="10 0 0 0"/>
                     </StackPanel>
+
+                    <DataTemplate.Triggers>
+                      <DataTrigger Binding="{Binding Students.Count}" Value="0">
+                        <Setter TargetName="TextView" Property="Foreground" Value="Tomato" />
+                      </DataTrigger>
+                    </DataTemplate.Triggers>
+
                   </DataTemplate>
                 </ListBox.ItemTemplate>
               </ListBox>
@@ -181,22 +189,17 @@
                     >
             <DataGrid ItemsSource="{Binding SelectedGroup.Students}"
                       AutoGenerateColumns="False"
-                      CanUserAddRows="False"
                       GridLinesVisibility="Vertical"
                       VerticalGridLinesBrush="LightGray">
               <DataGrid.Columns>
                 <DataGridTextColumn Header="Фамилия" 
-                                    Binding="{Binding Surname}"
-                                    IsReadOnly="True"/>
+                                    Binding="{Binding Surname}"/>
                 <DataGridTextColumn Header="Имя" 
-                                    Binding="{Binding Name}"
-                                    IsReadOnly="True"/>
+                                    Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Отчество" 
-                                    Binding="{Binding Patronymic}"
-                                    IsReadOnly="True"/>
+                                    Binding="{Binding Patronymic}"/>
                 <DataGridTextColumn Header="Рейтинг"
-                                    Binding="{Binding Rating}"
-                                    IsReadOnly="True"/>
+                                    Binding="{Binding Rating}"/>
                 <!--<DataGridTextColumn Header="Дата рождения"
                                     Binding="{Binding Birthday, StringFormat=dd.MM.yyyy}"/>-->
                 <DataGridTemplateColumn Header="Дата рождения">
