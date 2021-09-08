@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using CV19.Infrastructure.Commands;
 using CV19.Models;
+using CV19.Models.Decanat;
 using CV19.ViewModels.Base;
 
 namespace CV19.ViewModels
@@ -12,8 +15,39 @@ namespace CV19.ViewModels
   {
     #region Свойства
 
+    public ObservableCollection<Group> Groups { get; }
+
+    public object[] CompositeCollection { get; }
+
+    #region Выбранный непонятный элемент
+
+    private object _selectedCompositeValue;
+
+    /// <summary>
+    /// Выбранный непонятный элемент
+    /// </summary>
+    public object SelectedCompositeValue
+    {
+      get => _selectedCompositeValue;
+      set => Set(ref _selectedCompositeValue, value);
+    }
+
+    #endregion
+
+    #region Выбранная группа
+    private Group _selectedGroup;
+    /// <summary>
+    /// Выбранная группа
+    /// </summary>
+    public Group SelectedGroup
+    {
+      get => _selectedGroup;
+      set => Set(ref _selectedGroup, value);
+    } 
+    #endregion
+
     #region Номер выбранной вкладки
-    private int _selectedPageIndex = 0;
+    private int _selectedPageIndex = 1;
     /// <summary>
     /// Номер выбранной вкладки
     /// </summary>
@@ -96,7 +130,47 @@ namespace CV19.ViewModels
     {
       if (p is null) return;
       SelectedPageIndex += Convert.ToInt32(p);
-    } 
+    }
+    #endregion
+
+    #region CreateGroupCommand - Создание группы студентов
+    public ICommand CreateGroupCommand { get; }
+
+    private bool CanCreateGroupCommandExecute(object p) => true;
+
+    private void OnCreateGroupCommandExecuted(object p)
+    {
+      var group_max_index = Groups.Count + 1;
+
+      var new_group = new Group
+      {
+        Name = $"Группа №{group_max_index}",
+        Students = new List<Student>()
+      };
+
+      Groups.Add(new_group);
+    }
+    #endregion
+
+    #region DeleteGroupCommand - Удаление группы студентов
+    public ICommand DeleteGroupCommand { get; }
+    /// <summary>
+    /// Удаление группы студентов
+    /// </summary>
+    /// <param name="p"></param>
+    /// <returns></returns>
+    private bool CanDeleteGroupCommandExecute(object p) => p is Group group && Groups.Contains(group);
+
+    private void OnDeleteGroupCommandExecuted(object p)
+    {
+      if (!(p is Group group)) return;
+      var group_index = Groups.IndexOf(group);
+      Groups.Remove(group);
+
+      if (group_index < Groups.Count)
+        SelectedGroup = Groups[group_index];
+
+    }
     #endregion
 
     #endregion
@@ -105,6 +179,26 @@ namespace CV19.ViewModels
 
     public MainWindowViewModel()
     {
+      #region Студенты
+
+      var student_index = 1;
+      var students = Enumerable.Range(1, 25).Select(i => new Student
+      {
+        Name = $"Name {student_index}",
+        Surname = $"Surname {student_index}",
+        Patronymic = $"Patronymic {student_index++}",
+        Birthday = DateTime.Now,
+        Rating = 0
+      });
+
+      var groups = Enumerable.Range(1, 50).Select(i => new Group
+      {
+        Name = $"Группа № {i}",
+        Students = new ObservableCollection<Student>(students)
+      });
+      Groups = new ObservableCollection<Group>(groups);
+      #endregion
+
       #region Тестовый набор данных для визуализации графика
       var data_points = new List<DataPoint>((int) (360 / 0.1));
       for (var x = 0d; x <= 360; x += 0.1)
@@ -121,6 +215,17 @@ namespace CV19.ViewModels
       TestDataPoints = data_points;
       #endregion
 
+      #region Composite Collection
+      var data_list = new List<object>();
+      data_list.Add("Hello world");
+      data_list.Add(42);
+      var group = Groups[1];
+      data_list.Add(group);
+      data_list.Add(group.Students[0]);
+
+      CompositeCollection = data_list.ToArray();
+      #endregion
+
       #region Команды
 
       CloseApplicationCommand = new LambdaCommand(
@@ -130,6 +235,14 @@ namespace CV19.ViewModels
       ChangeTabIndexCommand = new LambdaCommand(
         OnChangeTabIndexCommandExecuted,
         CanChangeTabIndexCommandExecute);
+
+      CreateGroupCommand = new LambdaCommand(
+        OnCreateGroupCommandExecuted,
+        CanCreateGroupCommandExecute);
+
+      DeleteGroupCommand = new LambdaCommand(
+        OnDeleteGroupCommandExecuted,
+        CanDeleteGroupCommandExecute);
 
       #endregion
     }
