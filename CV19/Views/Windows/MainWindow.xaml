@@ -20,7 +20,7 @@
 
   <Window.InputBindings>
     <KeyBinding Modifiers="Control" Key="Q">
-      <KeyBinding.Command>
+      <KeyBinding.Command> 
         <cmd:CloseApplicationCommand/>
       </KeyBinding.Command>
     </KeyBinding>
@@ -93,22 +93,11 @@
               <TextBlock Text="Элементы"/>
             </GroupBox.Header>
             <GroupBox.Resources>
-              <DataTemplate DataType="{x:Type decanat:Group}">
-                <TextBlock Text="{Binding Name}"/>
-              </DataTemplate>
-              <DataTemplate DataType="{x:Type decanat:Student}">
-                <TextBlock Text="{Binding Name, StringFormat=Студент {0}}"/>
-              </DataTemplate>
-              <DataTemplate DataType="{x:Type sys:String}">
-                <TextBlock>
-                  <Run Foreground="DarkRed" FontWeight="DemiBold">Строка:</Run> <TextBlock Text="{Binding}"/>
-                </TextBlock>
-              </DataTemplate>
-              <DataTemplate DataType="{x:Type sys:Int32}">
-                <TextBlock>
-                  <Run Foreground="DarkRed" FontWeight="DemiBold">Число:</Run> <TextBlock Text="{Binding}"/>
-                </TextBlock>
-              </DataTemplate>
+              <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                  <ResourceDictionary Source="../../Resources/DataTemplates/CompositeListItemDataTemplate.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+              </ResourceDictionary>
             </GroupBox.Resources>
 
             <ListBox ItemsSource="{Binding CompositeCollection}"
@@ -116,7 +105,17 @@
                      SelectedIndex="3"/>
           </GroupBox>
 
-          <GroupBox Grid.Column="1" Header="Выбранный элемент">
+          <GroupBox Grid.Column="1">
+            <GroupBox.Header>
+              <TextBlock Text="Выбранный элемент"/>
+            </GroupBox.Header>
+            <GroupBox.Resources>
+              <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                  <ResourceDictionary Source="../../Resources/DataTemplates/CompositeItemsControlDataTemplate.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+              </ResourceDictionary>
+            </GroupBox.Resources>
             <ContentControl Content="{Binding SelectedCompositeValue}"/>
           </GroupBox>
         </Grid>
@@ -138,19 +137,43 @@
           </Grid.ColumnDefinitions>
 
           <GroupBox Grid.Column="0" Header="Группы">
-            <ListBox ItemsSource="{Binding Groups}"
-                     SelectedItem="{Binding SelectedGroup}"
-                     SelectedIndex="0">
-              <ListBox.ItemTemplate>
-                <DataTemplate DataType="decanat:Group">
-                  <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Name}"/>
-                    <TextBlock Text="{Binding Students.Count, StringFormat=[Студентов: {0}]}"
+            <DockPanel>
+              <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0 3">
+                <UniformGrid.Resources>
+                  <Style TargetType="Button">
+                    <Setter Property="Margin" Value="3 0" />
+                    <Setter Property="Padding" Value="3 5"/>
+                    <Setter Property="Background" Value="White"/>
+                  </Style>
+                </UniformGrid.Resources>
+                <Button Command="{Binding CreateGroupCommand}"
+                        Style="{StaticResource CheckButtonStyle}"
+                        Content="Добавить"
+                        Padding="0 5"
+                        Margin="0 0 2 0"/>
+
+                <Button Content="Удалить"
+                        Command="{Binding DeleteGroupCommand}"
+                        CommandParameter="{Binding SelectedGroup}"
+                        Style="{StaticResource RemoveButtonStyle}"
+                        Padding="0 5"
+                        Margin="2 0 0 0"/>
+              </UniformGrid>
+
+              <ListBox ItemsSource="{Binding Groups}"
+                       SelectedItem="{Binding SelectedGroup}"
+                       SelectedIndex="0">
+                <ListBox.ItemTemplate>
+                  <DataTemplate DataType="decanat:Group">
+                    <StackPanel Orientation="Horizontal">
+                      <TextBlock Text="{Binding Name}"/>
+                      <TextBlock Text="{Binding Students.Count, StringFormat=[Студентов: {0}]}"
                                Margin="10 0 0 0"/>
-                  </StackPanel>
-                </DataTemplate>
-              </ListBox.ItemTemplate>
-            </ListBox>
+                    </StackPanel>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+            </DockPanel>
           </GroupBox>
 
           <GroupBox Grid.Column="1" 
