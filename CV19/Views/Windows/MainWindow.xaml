@@ -92,11 +92,13 @@
           <GroupBox Grid.Column="0" Header="Группы">
             <DockPanel>
               <DockPanel.Resources>
-                <CollectionViewSource x:Key="GroupsCollection" Source="{Binding Groups}"/>
+                <CollectionViewSource x:Key="GroupsCollection" 
+                                      Source="{Binding Groups}"
+                                      Filter="GroupsCollection_OnFilter"/>
               </DockPanel.Resources>
               <DockPanel DockPanel.Dock="Top" Margin="0 7">
                 <fa:SvgAwesome Height="14" Icon="Solid_Filter" Foreground="MediumPurple" Margin="0 0 5 0"/>
-                <TextBox/>
+                <TextBox x:Name="GroupNameFilterText" TextChanged="GroupNameFilterText_OnTextChanged"/>
               </DockPanel>
               <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0 3">
                 <UniformGrid.Resources>
