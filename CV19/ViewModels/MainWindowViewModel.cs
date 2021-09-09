@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using CV19.Infrastructure.Commands;
 using CV19.Models;
@@ -11,7 +13,7 @@ using CV19.ViewModels.Base;
 
 namespace CV19.ViewModels
 {
-  public class MainWindowViewModel: ViewModel
+  public class MainWindowViewModel : ViewModel
   {
     #region Свойства
 
@@ -42,12 +44,17 @@ namespace CV19.ViewModels
     public Group SelectedGroup
     {
       get => _selectedGroup;
-      set => Set(ref _selectedGroup, value);
-    } 
+      set
+      {
+        if(!Set(ref _selectedGroup, value)) return;
+        _selectedGroupStudents.Source = value?.Students;
+        OnPropertyChanged(nameof(SelectedGroupStudents));
+      }
+    }
     #endregion
 
     #region Номер выбранной вкладки
-    private int _selectedPageIndex = 1;
+    private int _selectedPageIndex = 0;
     /// <summary>
     /// Номер выбранной вкладки
     /// </summary>
@@ -55,7 +62,7 @@ namespace CV19.ViewModels
     {
       get => _selectedPageIndex;
       set => Set(ref _selectedPageIndex, value);
-    } 
+    }
     #endregion
 
     #region Тестовый набор данных для визуализации графика
@@ -64,8 +71,9 @@ namespace CV19.ViewModels
     /// <summary>
     /// Тестовый набор данных для визуализации графика
     /// </summary>
-    public IEnumerable<DataPoint> TestDataPoints { 
-      get => _testDataPoints; 
+    public IEnumerable<DataPoint> TestDataPoints
+    {
+      get => _testDataPoints;
       set => Set(ref _testDataPoints, value);
     }
 
@@ -97,6 +105,75 @@ namespace CV19.ViewModels
       set => Set(ref _status, value);
     }
 
+    #endregion
+
+    #region Виртуализация
+
+    public IEnumerable<Student> TestStudents => Enumerable
+      .Range(1, App.IsDedignMode ? 10 : 100_000)
+      .Select(i => new Student
+      {
+        Name = $"Имя {i}",
+        Surname = $"Фамилия {i}",
+        Patronymic = $"Отчество {i}",
+      });
+    #endregion
+
+    #region Текст фильтра студентов
+    private string _studentFilterText;
+    /// <summary>
+    /// Текст фильтра студентов
+    /// </summary>
+    public string StudentFilterText
+    {
+      get => _studentFilterText;
+      set
+      {
+        if(!Set(ref _studentFilterText, value)) return;
+        _selectedGroupStudents.View.Refresh();
+      }
+    }
+
+    #endregion
+
+    #region Фильтрация студентов
+    private readonly CollectionViewSource _selectedGroupStudents = new CollectionViewSource();
+
+    public ICollectionView SelectedGroupStudents => _selectedGroupStudents?.View;
+
+    private void OnStudentsFilter(object sender, FilterEventArgs e)
+    {
+      if (!(e.Item is Student student)) return;
+      if (student.Name is null) return;
+
+      var filter_text = _studentFilterText;
+      if (string.IsNullOrWhiteSpace(filter_text)) return;
+
+      if (student.Name is null || student.Surname is null)
+      {
+        e.Accepted = false;
+        return;
+      }
+
+      if(student.Name.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+      if(student.Surname.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+
+      e.Accepted = false;
+    }
+    #endregion
+
+    public DirectoryViewModel DiskRootDir { get; } = new DirectoryViewModel("Z:\\");
+
+    #region Выбранная директория
+    private DirectoryViewModel _selectedDirectory;
+    /// <summary>
+    /// Выбранная директория
+    /// </summary>
+    public DirectoryViewModel SelectedDirectory
+    {
+      get => _selectedDirectory;
+      set => Set(ref _selectedDirectory, value);
+    } 
     #endregion
 
     #endregion
@@ -182,7 +259,7 @@ namespace CV19.ViewModels
       #region Студенты
 
       var student_index = 1;
-      var students = Enumerable.Range(1, 25).Select(i => new Student
+      var students = Enumerable.Range(1, 10).Select(i => new Student
       {
         Name = $"Name {student_index}",
         Surname = $"Surname {student_index}",
@@ -191,7 +268,7 @@ namespace CV19.ViewModels
         Rating = 0
       });
 
-      var groups = Enumerable.Range(1, 50).Select(i => new Group
+      var groups = Enumerable.Range(1, 5).Select(i => new Group
       {
         Name = $"Группа № {i}",
         Students = new ObservableCollection<Student>(students)
@@ -200,7 +277,7 @@ namespace CV19.ViewModels
       #endregion
 
       #region Тестовый набор данных для визуализации графика
-      var data_points = new List<DataPoint>((int) (360 / 0.1));
+      var data_points = new List<DataPoint>((int)(360 / 0.1));
       for (var x = 0d; x <= 360; x += 0.1)
       {
         const double to_rad = Math.PI / 180;
@@ -226,10 +303,18 @@ namespace CV19.ViewModels
       CompositeCollection = data_list.ToArray();
       #endregion
 
+      #region Фильтрация, сортировка студентов
+      _selectedGroupStudents.Filter += OnStudentsFilter;
+      _selectedGroupStudents.SortDescriptions.Add(
+        new SortDescription("Name", ListSortDirection.Descending)); 
+      _selectedGroupStudents.GroupDescriptions.Add(
+        new PropertyGroupDescription("Name"));
+      #endregion
+
       #region Команды
 
       CloseApplicationCommand = new LambdaCommand(
-        OnCloseApplicationCommandExecuted, 
+        OnCloseApplicationCommandExecuted,
         CanCloseApplicationCommandExecute);
 
       ChangeTabIndexCommand = new LambdaCommand(
@@ -246,6 +331,8 @@ namespace CV19.ViewModels
 
       #endregion
     }
+
+    
 
     #endregion
   }
