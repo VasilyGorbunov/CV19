@@ -75,46 +75,7 @@
 
     <!--#region Tab Control -->
     <TabControl SelectedIndex="{Binding SelectedPageIndex}">
-      <!--#region Виртуализация-->
-      <TabItem>
-        <TabItem.Header>
-          <StackPanel Orientation="Horizontal">
-            <fa:SvgAwesome Height="14" Icon="Regular_ListAlt" Foreground="HotPink" Margin="0 0 5 0"/>
-            <TextBlock Text="Виртуализация"/>
-          </StackPanel>
-        </TabItem.Header>
-        <Grid>
-          <!--<TextBlock Text="{Binding Source={x:Static l:App.IsDedignMode}}"/>-->
-          <ListBox HorizontalAlignment="Left" 
-                   Width="250" 
-                   Margin="30" 
-                   ItemsSource="{Binding TestStudents}">
-
-            <ListBox.ItemContainerStyle>
-              <Style TargetType="ListBoxItem">
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-              </Style>
-            </ListBox.ItemContainerStyle>
-
-            <ListBox.ItemTemplate>
-              <DataTemplate DataType="decanat:Student">
-                <Border BorderBrush="RoyalBlue" 
-                        BorderThickness="1" 
-                        CornerRadius="3" 
-                        Padding="5">
-                  <StackPanel>
-                    <TextBlock Text="{Binding Surname}" ToolTip="{Binding Surname}"/>
-                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}"/>
-                    <TextBlock Text="{Binding Patronymic, TargetNullValue=--}" ToolTip="{Binding Patronymic}"/>
-                  </StackPanel>
-                </Border>
-              </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
-        </Grid>
-      </TabItem>
-      <!--#endregion-->
-
+      
       <!--#region Студенты-->
       <TabItem>
         <TabItem.Header>
@@ -243,6 +204,57 @@
             </DockPanel>
           </GroupBox>
 
+        </Grid>
+      </TabItem>
+      <!--#endregion-->
+
+      <!--#region Виртуализация-->
+      <TabItem>
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <fa:SvgAwesome Height="14" Icon="Regular_ListAlt" Foreground="HotPink" Margin="0 0 5 0"/>
+            <TextBlock Text="Виртуализация"/>
+          </StackPanel>
+        </TabItem.Header>
+        <Grid>
+          <ListBox HorizontalAlignment="Left" 
+                   Width="250" 
+                   Margin="30" 
+                   ItemsSource="{Binding TestStudents}"
+                   VirtualizingPanel.IsContainerVirtualizable="True"
+                   VirtualizingPanel.IsVirtualizing="True"
+                   VirtualizingPanel.VirtualizationMode="Recycling">
+
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <VirtualizingStackPanel/>
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemContainerStyle>
+              <Style TargetType="ListBoxItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+              </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="decanat:Student">
+                <Border BorderBrush="RoyalBlue" 
+                        BorderThickness="1" 
+                        CornerRadius="3" 
+                        Padding="5">
+                  <Border.CacheMode>
+                    <BitmapCache/>
+                  </Border.CacheMode>
+                  <StackPanel>
+                    <TextBlock Text="{Binding Surname}" ToolTip="{Binding Surname}"/>
+                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}"/>
+                    <TextBlock Text="{Binding Patronymic, TargetNullValue=--}" ToolTip="{Binding Patronymic}"/>
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
         </Grid>
       </TabItem>
       <!--#endregion-->
