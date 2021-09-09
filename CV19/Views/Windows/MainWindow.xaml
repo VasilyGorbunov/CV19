@@ -91,6 +91,9 @@
 
           <GroupBox Grid.Column="0" Header="Группы">
             <DockPanel>
+              <DockPanel.Resources>
+                <CollectionViewSource x:Key="GroupsCollection" Source="{Binding Groups}"/>
+              </DockPanel.Resources>
               <DockPanel DockPanel.Dock="Top" Margin="0 7">
                 <fa:SvgAwesome Height="14" Icon="Solid_Filter" Foreground="MediumPurple" Margin="0 0 5 0"/>
                 <TextBox/>
@@ -117,7 +120,7 @@
                         Margin="2 0 0 0"/>
               </UniformGrid>
 
-              <ListBox ItemsSource="{Binding Groups}"
+              <ListBox ItemsSource="{Binding Source={StaticResource GroupsCollection}}"
                        SelectedItem="{Binding SelectedGroup}"
                        SelectedIndex="0">
                 <ListBox.ItemTemplate>
