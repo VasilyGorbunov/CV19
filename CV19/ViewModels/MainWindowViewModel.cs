@@ -99,6 +99,18 @@ namespace CV19.ViewModels
 
     #endregion
 
+    #region Виртуализация
+
+    public IEnumerable<Student> TestStudents => Enumerable
+      .Range(1, App.IsDedignMode ? 10 : 100_000)
+      .Select(i => new Student
+      {
+        Name = $"Имя {i}",
+        Surname = $"Фамилия {i}",
+        Patronymic = $"Отчество {i}",
+      });
+    #endregion
+
     #endregion
 
     #region Команды

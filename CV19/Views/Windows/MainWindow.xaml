@@ -9,6 +9,7 @@
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         xmlns:decanat="clr-namespace:CV19.Models.Decanat"
+        xmlns:l="clr-namespace:CV19"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         Height="700" 
@@ -74,6 +75,45 @@
 
     <!--#region Tab Control -->
     <TabControl SelectedIndex="{Binding SelectedPageIndex}">
+      <!--#region Виртуализация-->
+      <TabItem>
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <fa:SvgAwesome Height="14" Icon="Regular_ListAlt" Foreground="HotPink" Margin="0 0 5 0"/>
+            <TextBlock Text="Виртуализация"/>
+          </StackPanel>
+        </TabItem.Header>
+        <Grid>
+          <!--<TextBlock Text="{Binding Source={x:Static l:App.IsDedignMode}}"/>-->
+          <ListBox HorizontalAlignment="Left" 
+                   Width="250" 
+                   Margin="30" 
+                   ItemsSource="{Binding TestStudents}">
+
+            <ListBox.ItemContainerStyle>
+              <Style TargetType="ListBoxItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+              </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="decanat:Student">
+                <Border BorderBrush="RoyalBlue" 
+                        BorderThickness="1" 
+                        CornerRadius="3" 
+                        Padding="5">
+                  <StackPanel>
+                    <TextBlock Text="{Binding Surname}" ToolTip="{Binding Surname}"/>
+                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}"/>
+                    <TextBlock Text="{Binding Patronymic, TargetNullValue=--}" ToolTip="{Binding Patronymic}"/>
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Grid>
+      </TabItem>
+      <!--#endregion-->
 
       <!--#region Студенты-->
       <TabItem>
@@ -276,6 +316,7 @@
         </oxy:Plot>
       </TabItem>
       <!--#endregion-->
+
       <!--#region Фигуры -->
       <TabItem>
         <TabItem.Header>
