@@ -10,6 +10,7 @@
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:l="clr-namespace:CV19"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         Height="700" 
@@ -95,7 +96,11 @@
               <DockPanel.Resources>
                 <CollectionViewSource x:Key="GroupsCollection" 
                                       Source="{Binding Groups}"
-                                      Filter="GroupsCollection_OnFilter"/>
+                                      Filter="GroupsCollection_OnFilter">
+                  <CollectionViewSource.SortDescriptions>
+                    <componentModel:SortDescription PropertyName="Name" Direction="Descending"/>
+                  </CollectionViewSource.SortDescriptions>
+                </CollectionViewSource>
               </DockPanel.Resources>
               <DockPanel DockPanel.Dock="Top" Margin="0 7">
                 <fa:SvgAwesome Height="14" Icon="Solid_Filter" Foreground="MediumPurple" Margin="0 0 5 0"/>
@@ -169,6 +174,9 @@
                         AutoGenerateColumns="False"
                         GridLinesVisibility="Vertical"
                         VerticalGridLinesBrush="LightGray">
+                <DataGrid.GroupStyle>
+                  <GroupStyle/>
+                </DataGrid.GroupStyle>
                 <DataGrid.Columns>
                   <DataGridTextColumn Header="Фамилия" 
                                     Binding="{Binding Surname}"/>

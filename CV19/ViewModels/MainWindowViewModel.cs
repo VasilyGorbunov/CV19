@@ -289,7 +289,13 @@ namespace CV19.ViewModels
       CompositeCollection = data_list.ToArray();
       #endregion
 
+      #region Фильтрация, сортировка студентов
       _selectedGroupStudents.Filter += OnStudentsFilter;
+      _selectedGroupStudents.SortDescriptions.Add(
+        new SortDescription("Name", ListSortDirection.Descending)); 
+      _selectedGroupStudents.GroupDescriptions.Add(
+        new PropertyGroupDescription("Name"));
+      #endregion
 
       #region Команды
 
