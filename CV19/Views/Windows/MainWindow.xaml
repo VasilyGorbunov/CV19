@@ -163,9 +163,9 @@
             <DockPanel>
               <DockPanel DockPanel.Dock="Top" Margin="0 7">
                 <fa:SvgAwesome Height="14" Icon="Solid_Filter" Foreground="MediumPurple" Margin="0 0 5 0"/>
-                <TextBox/>
+                <TextBox Text="{Binding StudentFilterText, UpdateSourceTrigger=PropertyChanged}"/>
               </DockPanel>
-              <DataGrid ItemsSource="{Binding SelectedGroup.Students}"
+              <DataGrid ItemsSource="{Binding SelectedGroupStudents}"
                         AutoGenerateColumns="False"
                         GridLinesVisibility="Vertical"
                         VerticalGridLinesBrush="LightGray">
