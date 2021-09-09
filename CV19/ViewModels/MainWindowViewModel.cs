@@ -159,6 +159,20 @@ namespace CV19.ViewModels
       if(student.Surname.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
 
       e.Accepted = false;
+    }
+    #endregion
+
+    public DirectoryViewModel DiskRootDir { get; } = new DirectoryViewModel("Z:\\");
+
+    #region Выбранная директория
+    private DirectoryViewModel _selectedDirectory;
+    /// <summary>
+    /// Выбранная директория
+    /// </summary>
+    public DirectoryViewModel SelectedDirectory
+    {
+      get => _selectedDirectory;
+      set => Set(ref _selectedDirectory, value);
     } 
     #endregion
 

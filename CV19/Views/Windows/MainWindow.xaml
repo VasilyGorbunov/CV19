@@ -76,7 +76,50 @@
 
     <!--#region Tab Control -->
     <TabControl SelectedIndex="{Binding SelectedPageIndex}">
-      
+      <!--#region Файловая система -->
+      <TabItem>
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <fa:SvgAwesome Height="14" Icon="Regular_File" Margin="0 0 5 0" Foreground="MediumAquamarine"/>
+            <TextBlock Text="Файловая система"/>
+          </StackPanel>
+        </TabItem.Header>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+
+          <GroupBox Grid.Column="0" Header="Директории">
+            <!--<ListBox ItemsSource="{Binding DiskRootDir.DirectoryItems}"
+                     SelectedItem="{Binding SelectedDirectory}"
+                     SelectedIndex="0">
+              <ListBox.ItemTemplate>
+                <DataTemplate DataType="vm:DirectoryViewModel">
+                  <TextBlock Text="{Binding Name}" ToolTip="{Binding CreationTime}"/>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>-->
+            <TreeView ItemsSource="{Binding DiskRootDir.DirectoryItems}">
+              <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="vm:DirectoryViewModel" ItemsSource="{Binding DirectoryItems}">
+                  <StackPanel Orientation="Horizontal">
+                    <fa:SvgAwesome Height="12" Icon="Solid_Folder" Margin="0 0 3 0" Foreground="RoyalBlue"/>
+                    <TextBlock Text="{Binding Name}"/>
+                  </StackPanel>
+                </HierarchicalDataTemplate>
+              </TreeView.ItemTemplate>
+            </TreeView>
+          </GroupBox>
+
+          <GroupBox Grid.Column="1" Header="Файлы">
+            <ListBox ItemsSource="{Binding SelectedDirectory.Files}"/>
+          </GroupBox>
+
+        </Grid>
+      </TabItem>
+      <!--#endregion-->
+
       <!--#region Студенты-->
       <TabItem>
         <TabItem.Header>
