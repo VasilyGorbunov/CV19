@@ -47,7 +47,7 @@ namespace CV19.ViewModels
     #endregion
 
     #region Номер выбранной вкладки
-    private int _selectedPageIndex = 1;
+    private int _selectedPageIndex = 0;
     /// <summary>
     /// Номер выбранной вкладки
     /// </summary>
@@ -182,7 +182,7 @@ namespace CV19.ViewModels
       #region Студенты
 
       var student_index = 1;
-      var students = Enumerable.Range(1, 25).Select(i => new Student
+      var students = Enumerable.Range(1, 10).Select(i => new Student
       {
         Name = $"Name {student_index}",
         Surname = $"Surname {student_index}",
@@ -191,7 +191,7 @@ namespace CV19.ViewModels
         Rating = 0
       });
 
-      var groups = Enumerable.Range(1, 50).Select(i => new Group
+      var groups = Enumerable.Range(1, 5).Select(i => new Group
       {
         Name = $"Группа № {i}",
         Students = new ObservableCollection<Student>(students)
