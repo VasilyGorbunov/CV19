@@ -11,6 +11,7 @@
         xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:l="clr-namespace:CV19"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:views="clr-namespace:CV19.Views"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         Height="700" 
@@ -76,14 +77,17 @@
 
     <!--#region Tab Control -->
     <TabControl SelectedIndex="{Binding SelectedPageIndex}">
+      <!--#region CV19 -->
       <TabItem>
         <TabItem.Header>
           <StackPanel Orientation="Horizontal">
-            <fa:SvgAwesome Height="14" Icon="Solid_Virus" Margin="0 0 5 0" Foreground="DarkOliveGreen"/>
+            <fa:SvgAwesome Height="14" Icon="Solid_Biohazard" Margin="0 0 5 0" Foreground="OrangeRed"/>
             <TextBlock Text="CV19"/>
           </StackPanel>
         </TabItem.Header>
+        <views:CountriesStatisticView/>
       </TabItem>
+      <!--#endregion-->
       <!--#region Файловая система -->
       <TabItem>
         <TabItem.Header>
