@@ -6,10 +6,16 @@
              xmlns:local="clr-namespace:CV19"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:vm="clr-namespace:CV19.ViewModels"
+             xmlns:models="clr-namespace:CV19.Models"
+             xmlns:converters="clr-namespace:CV19.Infrastructure.Converters"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:CountriesStatisticViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" 
              d:DesignWidth="800">
+  <UserControl.Resources>
+    <converters:LocationPointToStr x:Key="LocationPointToStr"/>
+  </UserControl.Resources>
+
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="250"/>
@@ -24,10 +30,29 @@
         <Button DockPanel.Dock="Top" Margin="0 0 0 5" Padding="5" Command="{Binding RefreshDataCommand}">
           <StackPanel Orientation="Horizontal">
             <fa5:SvgAwesome Height="14" Icon="Solid_ArrowDown" Foreground="RoyalBlue" Margin="0 0 3 0"/>
-            <TextBlock Text="Загрузить данные"/> 
+            <TextBlock Text="Загрузить данные"/>
           </StackPanel>
         </Button>
-        <ListBox ItemsSource="{Binding Countries}"/>
+        <ListBox ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}">
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="models:CountryInfo">
+
+              <TextBlock>
+                <TextBlock Text="{Binding Name}"/>
+                <TextBlock Text="{Binding Location, Converter={StaticResource LocationPointToStr}, StringFormat=({0})}"/>
+                <!--<TextBlock>
+                  <TextBlock.Text>
+                    <Binding Path="Location" StringFormat="({0})">
+                      <Binding.Converter>
+                        <convertes:LocationPointToStr/>
+                      </Binding.Converter>
+                    </Binding>
+                  </TextBlock.Text>
+                </TextBlock>-->
+              </TextBlock>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
       </DockPanel>
     </GroupBox>
 
@@ -35,14 +60,17 @@
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition/>
-          <RowDefinition/> 
+          <RowDefinition/>
         </Grid.RowDefinitions>
 
         <GridSplitter VerticalAlignment="Bottom" 
                       HorizontalAlignment="Stretch"/>
 
+        <Slider Grid.Row="0" Name="ValueSlider"/>
+        <TextBlock Grid.Row="0" Margin="0 30 0 0" Text="{Binding Path=Value, ElementName=ValueSlider}"/>
+
       </Grid>
     </GroupBox>
 
-  </Grid> 
+  </Grid>
 </UserControl>

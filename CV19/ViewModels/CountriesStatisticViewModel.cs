@@ -12,7 +12,7 @@ namespace CV19.ViewModels
 {
   public class CountriesStatisticViewModel: ViewModel
   {
-    private DataService _dataService;
+    private readonly DataService _dataService;
     private MainWindowViewModel MainModel { get; }
 
     #region Properties
@@ -27,6 +27,18 @@ namespace CV19.ViewModels
     {
       get => _countries;
       private set => Set(ref _countries, value);
+    }
+    #endregion
+
+    #region Выбранная страна
+    private CountryInfo _selectedCountry;
+    /// <summary>
+    /// Выбранная страна
+    /// </summary>
+    public CountryInfo SelectedCountry
+    {
+      get => _selectedCountry;
+      set => Set(ref _selectedCountry, value);
     } 
     #endregion
 
