@@ -15,6 +15,7 @@ namespace CV19.ViewModels
 {
   public class MainWindowViewModel : ViewModel
   {
+    public CountriesStatisticViewModel CountriesStatistic { get; }
     #region Свойства
 
     public ObservableCollection<Group> Groups { get; }
@@ -256,6 +257,8 @@ namespace CV19.ViewModels
 
     public MainWindowViewModel()
     {
+      CountriesStatistic = new CountriesStatisticViewModel(this);
+
       #region Студенты
 
       var student_index = 1;

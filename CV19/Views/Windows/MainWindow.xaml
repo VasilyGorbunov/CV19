@@ -85,7 +85,7 @@
             <TextBlock Text="CV19"/>
           </StackPanel>
         </TabItem.Header>
-        <views:CountriesStatisticView/>
+        <views:CountriesStatisticView DataContext="{Binding CountriesStatistic}"/>
       </TabItem>
       <!--#endregion-->
       <!--#region Файловая система -->
