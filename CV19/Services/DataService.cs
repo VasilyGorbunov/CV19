@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using CV19.Models;
@@ -24,7 +25,8 @@ namespace CV19.Services
 
     private static IEnumerable<string> GetDataLines()
     {
-      using var dataStream = GetDataStream().Result;
+      using var dataStream =
+        (SynchronizationContext.Current is null ? GetDataStream() : Task.Run(GetDataStream)).Result;
       using var dataReader = new StreamReader(dataStream);
 
       while (!dataReader.EndOfStream)
@@ -33,7 +35,8 @@ namespace CV19.Services
         if (string.IsNullOrWhiteSpace(line)) continue;
         yield return line
           .Replace("Korea,", "Korea -")
-          .Replace("Bonaire,", "Bonaire -");
+          .Replace("Bonaire,", "Bonaire -")
+          .Replace("Saint Helena,", "Saint Helena -");
       }
     }
 
@@ -56,10 +59,13 @@ namespace CV19.Services
 
       foreach (var row in lines)
       {
+        double latitude;
+        double longitude;
+
         var province = row[0].Trim();
         var countryName = row[1].Trim(' ', '"');
-        var latitude = double.Parse(row[2]);
-        var longitude = double.Parse(row[3]);
+        latitude = string.IsNullOrWhiteSpace(row[2]) ? 0.0 : double.Parse(row[2], CultureInfo.InvariantCulture);
+        longitude = string.IsNullOrWhiteSpace(row[3]) ? 0.0 : double.Parse(row[3], CultureInfo.InvariantCulture);
         var counts = row.Skip(4).Select(int.Parse).ToArray();
 
         yield return (province, countryName, (latitude, longitude), counts);
