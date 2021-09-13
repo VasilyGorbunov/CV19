@@ -11,12 +11,12 @@
   </DataTemplate>
   <DataTemplate DataType="{x:Type sys:String}">
     <TextBlock>
-      <Run Foreground="DarkRed" FontWeight="DemiBold">Строка:</Run> <TextBlock Text="{Binding}"/>
+      <Run Foreground="{StaticResource DarkRedBrush}" FontWeight="DemiBold">Строка:</Run> <TextBlock Text="{Binding}"/>
     </TextBlock>
   </DataTemplate>
   <DataTemplate DataType="{x:Type sys:Int32}">
     <TextBlock>
-      <Run Foreground="DarkRed" FontWeight="DemiBold">Число:</Run> <TextBlock Text="{Binding}"/>
+      <Run Foreground="{StaticResource DarkRedBrush}" FontWeight="DemiBold">Число:</Run> <TextBlock Text="{Binding}"/>
     </TextBlock>
   </DataTemplate>
 
