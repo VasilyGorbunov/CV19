@@ -6,6 +6,7 @@ using CV19.Infrastructure.Converters.Base;
 
 namespace CV19.Infrastructure.Converters
 {
+  [ValueConversion(typeof(Point), typeof(string))]
   public class LocationPointToStr : ConverterBase
   {
     public override object Convert(object value, Type t, object p, CultureInfo c)

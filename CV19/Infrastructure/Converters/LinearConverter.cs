@@ -1,13 +1,26 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows.Data;
+using System.Windows.Markup;
+using System.Windows.Media.Animation;
 using CV19.Infrastructure.Converters.Base;
 
 namespace CV19.Infrastructure.Converters
 {
+  [ValueConversion(typeof(double), typeof(double))]
   public class LinearConverter: ConverterBase
   {
+    [ConstructorArgument("K")]
     public double K { get; set; } = 1;
+
+    [ConstructorArgument("B")]
     public double B { get; set; }
+
+    public LinearConverter() {}
+
+    public LinearConverter(double K): this() => this.K = K;
+
+    public LinearConverter(double K, double B): this(K) => this.B = B;
 
     public override object Convert(object v, Type t, object p, CultureInfo c)
     {
