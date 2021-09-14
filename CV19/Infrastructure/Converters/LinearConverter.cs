@@ -8,6 +8,7 @@ using CV19.Infrastructure.Converters.Base;
 namespace CV19.Infrastructure.Converters
 {
   [ValueConversion(typeof(double), typeof(double))]
+  [MarkupExtensionReturnType(typeof(LinearConverter))]
   public class LinearConverter: ConverterBase
   {
     [ConstructorArgument("K")]

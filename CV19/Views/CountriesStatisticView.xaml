@@ -7,6 +7,7 @@
              xmlns:vm="clr-namespace:CV19.ViewModels"
              xmlns:models="clr-namespace:CV19.Models"
              xmlns:converters="clr-namespace:CV19.Infrastructure.Converters"
+             xmlns:common="clr-namespace:CV19.Infrastructure.Common"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:CountriesStatisticViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" 
@@ -75,9 +76,9 @@
         <GridSplitter VerticalAlignment="Bottom" 
                       HorizontalAlignment="Stretch"/>
 
-        <StackPanel>
-
-        </StackPanel>
+        <Border Grid.Row="1" DataContext="{common:StringToIntArray Str='1;2;3;4;5;6;7;8'}">
+          <ListBox ItemsSource="{Binding}"></ListBox>
+        </Border>
       </Grid>
     </GroupBox>
 

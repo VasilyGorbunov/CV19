@@ -1,19 +1,27 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Markup;
+using CV19.Infrastructure.Converters.Base;
 
 namespace CV19.Infrastructure.Converters
 {
-  public class RatioConverter: IValueConverter
+  [MarkupExtensionReturnType(typeof(RatioConverter))]
+  public class RatioConverter: ConverterBase
   {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-      throw new NotImplementedException();
-    }
+    [ConstructorArgument("K")]
+    public double K { get; set; } = 1;
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public RatioConverter() { }
+
+    public RatioConverter(double K) => this.K = K;
+
+    public override object Convert(object v, Type t, object p, CultureInfo c)
     {
-      throw new NotImplementedException();
+      if (v is null) return null;
+      var x = System.Convert.ToDouble(v, c);
+
+      return x * K;
     }
   }
 }
