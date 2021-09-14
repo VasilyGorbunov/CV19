@@ -1,10 +1,13 @@
 ﻿#nullable enable
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Markup;
+using System.Xaml;
 
 namespace CV19.ViewModels.Base
 {
-  public abstract class ViewModel: INotifyPropertyChanged
+  public abstract class ViewModel: MarkupExtension, INotifyPropertyChanged
   {
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -28,6 +31,23 @@ namespace CV19.ViewModels.Base
       field = value;
       OnPropertyChanged(propertyName);
       return true;
+    }
+
+    public override object ProvideValue(IServiceProvider sp)
+    {
+      var valueTargetService = sp.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
+      var rootObjectService = sp.GetService(typeof(IRootObjectProvider)) as IRootObjectProvider;
+
+      OnInitialized(valueTargetService?.TargetObject, 
+        valueTargetService?.TargetProperty, 
+        rootObjectService?.RootObject);
+
+      return this;
+    }
+
+    protected virtual void OnInitialized(object target, object property, object root)
+    {
+
     }
   }
 }

@@ -11,7 +11,8 @@
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:views="clr-namespace:CV19.Views"
         mc:Ignorable="d"
-        Title="{Binding Title}" 
+        Title="{Binding Path=Title}" 
+        DataContext="{vm:MainWindowViewModel}"
         Height="700" 
         Width="1200">
 
@@ -27,9 +28,9 @@
     </KeyBinding>
   </Window.InputBindings>
 
-  <Window.DataContext>
+  <!--<Window.DataContext>
     <vm:MainWindowViewModel/>
-  </Window.DataContext>
+  </Window.DataContext>-->
 
   <DockPanel>
 
