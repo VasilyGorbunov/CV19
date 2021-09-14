@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CV19"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:vm="clr-namespace:CV19.ViewModels"
              xmlns:models="clr-namespace:CV19.Models"
@@ -12,7 +11,8 @@
              d:DataContext="{d:DesignInstance vm:CountriesStatisticViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" 
              d:DesignWidth="800">
-  <UserControl.Resources>
+
+      <!--<UserControl.Resources>
     <converters:LocationPointToStr x:Key="LocationPointToStr"/>
     <converters:LinearConverter K="5" B="3" x:Key="LinearConverter_K5B3"/>
     <converters:CompositeConverter x:Key="CompositeConverter">
@@ -23,7 +23,7 @@
         <converters:RatioConverter></converters:RatioConverter>
       </converters:CompositeConverter.Second>
     </converters:CompositeConverter>
-  </UserControl.Resources>
+  </UserControl.Resources>-->
 
   <Grid>
     <Grid.ColumnDefinitions>
@@ -75,15 +75,9 @@
         <GridSplitter VerticalAlignment="Bottom" 
                       HorizontalAlignment="Stretch"/>
 
-        <Slider Grid.Row="0" 
-                Name="ValueSlider" 
-                Maximum="100" 
-                ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>
+        <StackPanel>
 
-        <TextBlock Grid.Row="0" 
-                   Margin="0 30 0 0" 
-                   Text="{Binding Path=Value, ElementName=ValueSlider, Converter={StaticResource CompositeConverter}, UpdateSourceTrigger=PropertyChanged}"/>
-
+        </StackPanel>
       </Grid>
     </GroupBox>
 
