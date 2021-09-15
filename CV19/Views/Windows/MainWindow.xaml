@@ -12,6 +12,7 @@
         xmlns:views="clr-namespace:CV19.Views"
         mc:Ignorable="d"
         Title="{Binding Path=Title}" 
+        WindowState="Maximized"
         DataContext="{vm:MainWindowViewModel}"
         Height="700" 
         Width="1200">
