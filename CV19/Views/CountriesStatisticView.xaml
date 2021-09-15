@@ -1,0 +1,115 @@
+﻿<UserControl x:Class="CV19.Views.CountriesStatisticView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:vm="clr-namespace:CV19.ViewModels"
+             xmlns:models="clr-namespace:CV19.Models"
+             xmlns:converters="clr-namespace:CV19.Infrastructure.Converters"
+             xmlns:common="clr-namespace:CV19.Infrastructure.Common"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:map="clr-namespace:MapControl;assembly=MapControl.WPF"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance vm:CountriesStatisticViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="450" 
+             d:DesignWidth="800">
+
+  <UserControl.Resources>
+    <converters:LocationPointToStr x:Key="LocationPointToStr"/>
+    <converters:LinearConverter K="5" B="3" x:Key="LinearConverter_K5B3"/>
+    <converters:CompositeConverter x:Key="CompositeConverter">
+      <converters:CompositeConverter.First>
+        <converters:LinearConverter K="5" B="10"/>
+      </converters:CompositeConverter.First>
+      <converters:CompositeConverter.Second>
+        <converters:RatioConverter></converters:RatioConverter>
+      </converters:CompositeConverter.Second>
+    </converters:CompositeConverter>
+  </UserControl.Resources>
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250"/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+
+    <GridSplitter VerticalAlignment="Stretch" 
+                  HorizontalAlignment="Right"/>
+
+    <GroupBox Grid.Column="0" Header="Список стран" Margin="0 0 5 0">
+      <DockPanel>
+        <Button DockPanel.Dock="Top" Margin="0 0 0 5" Padding="5" Command="{Binding RefreshDataCommand}">
+          <StackPanel Orientation="Horizontal">
+            <fa5:SvgAwesome Height="14" Icon="Solid_ArrowDown" Foreground="RoyalBlue" Margin="0 0 3 0"/>
+            <TextBlock Text="Загрузить данные"/>
+          </StackPanel>
+        </Button>
+        <ListBox ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}">
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="models:CountryInfo">
+
+              <TextBlock>
+                <TextBlock Text="{Binding Name}"/>
+                <TextBlock Text="{Binding Location, Converter={StaticResource LocationPointToStr}, StringFormat=({0})}"/>
+                <!--<TextBlock>
+                  <TextBlock.Text>
+                    <Binding Path="Location" StringFormat="({0})">
+                      <Binding.Converter>
+                        <convertes:LocationPointToStr/>
+                      </Binding.Converter>
+                    </Binding>
+                  </TextBlock.Text>
+                </TextBlock>-->
+              </TextBlock>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </DockPanel>
+    </GroupBox>
+
+    <GroupBox Grid.Column="1" Header="Информация" Margin="5 0 0 0">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <GridSplitter VerticalAlignment="Bottom" 
+                      HorizontalAlignment="Stretch"/>
+
+        <oxy:Plot Grid.Row="0">
+          <oxy:Plot.Axes>
+            <oxy:LinearAxis 
+              Position="Left" 
+              Title="Число"
+              MajorGridlineStyle="Solid"
+              MinorGridlineStyle="Dash"/>
+            <oxy:DateTimeAxis 
+              Position="Bottom" 
+              Title="Дата"
+              MajorGridlineStyle="Solid"
+              MinorGridlineStyle="Dash"/>
+          </oxy:Plot.Axes>
+
+          <oxy:LineSeries StrokeThickness="2" 
+                          Color="OrangeRed" 
+                          ItemsSource="{Binding SelectedCountry.Counts}"
+                          DataFieldX="Date"
+                          DataFieldY="Count"/>
+
+        </oxy:Plot>
+
+        <map:Map Grid.Row="1" ZoomLevel="4" MaxZoomLevel="21" Center="{Binding SelectedCountry.Location, Converter={converters:PointToMapLocation}}">
+          <map:MapScale Margin="4" Opacity="1" Background="Transparent" VerticalAlignment="Bottom"/>
+          <map:MapGraticule Opacity="0.3" Background="Transparent"/>
+          <map:Map.MapLayer>
+            <map:MapTileLayer TileSource="https://{c}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png"/>
+          </map:Map.MapLayer>
+        </map:Map>
+
+      </Grid>
+    </GroupBox>
+
+  </Grid>
+</UserControl>

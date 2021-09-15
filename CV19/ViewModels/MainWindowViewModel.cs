@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Markup;
 using CV19.Infrastructure.Commands;
 using CV19.Models;
 using CV19.Models.Decanat;
@@ -13,8 +14,10 @@ using CV19.ViewModels.Base;
 
 namespace CV19.ViewModels
 {
+  [MarkupExtensionReturnType(typeof(MainWindowViewModel))]
   public class MainWindowViewModel : ViewModel
   {
+    public CountriesStatisticViewModel CountriesStatistic { get; }
     #region Свойства
 
     public ObservableCollection<Group> Groups { get; }
@@ -188,7 +191,8 @@ namespace CV19.ViewModels
 
     private void OnCloseApplicationCommandExecuted(object p)
     {
-      Application.Current.Shutdown();
+      (RootObject as Window)?.Close();
+      //Application.Current.Shutdown();
     }
 
     private bool CanCloseApplicationCommandExecute(object p) => true;
@@ -256,6 +260,8 @@ namespace CV19.ViewModels
 
     public MainWindowViewModel()
     {
+      CountriesStatistic = new CountriesStatisticViewModel(this);
+
       #region Студенты
 
       var student_index = 1;

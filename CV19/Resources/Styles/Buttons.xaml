@@ -3,7 +3,7 @@
                     xmlns:fa="http://schemas.fontawesome.com/icons/">
 
   <Style x:Key="BaseBtn" TargetType="Button">
-    <Setter Property="Background" Value="White"/>
+    <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
   </Style>
 
   <Style TargetType="Button" BasedOn="{StaticResource BaseBtn}"/>
@@ -13,8 +13,8 @@
   </Style>
 
   <Style x:Key="DangerBtn" TargetType="Button" BasedOn="{StaticResource BaseBtn}">
-    <Setter Property="Background" Value="Red"/>
-    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="Background" Value="{StaticResource RedBrush}"/>
+    <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
   </Style>
 
   <!--*************************************************************************-->
@@ -40,16 +40,16 @@
         <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
       </Trigger>
       <Trigger Property="IsMouseOver" Value="true">
-        <Setter Property="Background" TargetName="border" Value="Blue"/>
-        <Setter Property="BorderBrush" TargetName="border" Value="White"/>
+        <Setter Property="Background" TargetName="border" Value="{StaticResource BlueBrush}"/>
+        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource WhiteBrush}"/>
         <Setter Property="Foreground" Value="White"/>
       </Trigger>
       <Trigger Property="IsPressed" Value="true">
-        <Setter Property="Background" TargetName="border" Value="DarkBlue"/>
+        <Setter Property="Background" TargetName="border" Value="{StaticResource DarkBlueBrush}"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="false">
-        <Setter Property="BorderBrush" TargetName="border" Value="DarkGray"/>
-        <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="DarkGray"/>
+        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource DarkGrayBrush}"/>
+        <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource DarkGrayBrush}"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
@@ -64,7 +64,7 @@
       <DockPanel Margin="{TemplateBinding Padding}"  
                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" >
-        <fa:SvgAwesome Height="12" Icon="Solid_Check" Foreground="LightGreen" Margin="0 0 3 0" Effect="{StaticResource ShadowDepth1}"/>
+        <fa:SvgAwesome Height="12" Icon="Solid_Check" Foreground="{StaticResource LightGreenBrush}" Margin="0 0 3 0" Effect="{StaticResource ShadowDepth1}"/>
         <ContentPresenter x:Name="contentPresenter" 
                           Focusable="False" 
                           RecognizesAccessKey="True" 
@@ -76,16 +76,16 @@
         <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
       </Trigger>
       <Trigger Property="IsMouseOver" Value="true">
-        <Setter Property="Background" TargetName="border" Value="Blue"/>
-        <Setter Property="BorderBrush" TargetName="border" Value="White"/>
+        <Setter Property="Background" TargetName="border" Value="{StaticResource BlueBrush}"/>
+        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource WhiteBrush}"/>
         <Setter Property="Foreground" Value="White"/>
       </Trigger>
       <Trigger Property="IsPressed" Value="true">
-        <Setter Property="Background" TargetName="border" Value="DarkBlue"/>
+        <Setter Property="Background" TargetName="border" Value="{StaticResource DarkBlueBrush}"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="false">
-        <Setter Property="BorderBrush" TargetName="border" Value="DarkGray"/>
-        <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="DarkGray"/>
+        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource DarkGrayBrush}"/>
+        <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource DarkGrayBrush}"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
@@ -103,7 +103,7 @@
         <fa:SvgAwesome x:Name="Icon" 
                        Height="12" 
                        Icon="Solid_Times" 
-                       Foreground="WhiteSmoke" 
+                       Foreground="{StaticResource WhiteBrush}" 
                        Margin="0 0 3 0" 
                        Effect="{StaticResource ShadowDepth1}"/>
         <ContentPresenter x:Name="contentPresenter" 
@@ -114,28 +114,28 @@
     </Border>
     <ControlTemplate.Triggers>
       <Trigger Property="IsMouseOver" Value="true">
-        <Setter Property="Background" TargetName="border" Value="WhiteSmoke"/>
-        <Setter Property="BorderBrush" TargetName="border" Value="Red"/>
+        <Setter Property="Background" TargetName="border" Value="{StaticResource WhiteSmokeBrush}"/>
+        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource RedBrush}"/>
         <Setter Property="Foreground" Value="Red"/>
-        <Setter TargetName="Icon" Property="Foreground" Value="DarkRed"/>
+        <Setter TargetName="Icon" Property="Foreground" Value="{StaticResource DarkRedBrush}"/>
       </Trigger>
       <Trigger Property="IsPressed" Value="true">
-        <Setter Property="Background" TargetName="border" Value="AntiqueWhite"/>
-        <Setter Property="BorderBrush" TargetName="border" Value="DarkRed"/>
+        <Setter Property="Background" TargetName="border" Value="{StaticResource WhiteBrush}"/>
+        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource DarkRedBrush}"/>
         <Setter Property="Foreground" Value="DarkRed"/>
-        <Setter TargetName="Icon" Property="Foreground" Value="Red"/>
+        <Setter TargetName="Icon" Property="Foreground" Value="{StaticResource RedBrush}"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="false">
-        <Setter Property="BorderBrush" TargetName="border" Value="DarkGray"/>
-        <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="DarkGray"/>
+        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource DarkGrayBrush}"/>
+        <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource DarkGrayBrush}"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
 
   <Style x:Key="CustomButtonStyle" TargetType="{x:Type Button}">
     <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-    <Setter Property="Background" Value="White"/>
-    <Setter Property="BorderBrush" Value="Black"/>
+    <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource BlackBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -146,9 +146,9 @@
 
   <Style x:Key="CheckButtonStyle" TargetType="{x:Type Button}">
     <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-    <Setter Property="Background" Value="White"/>
-    <Setter Property="BorderBrush" Value="Black"/>
-    <Setter Property="Foreground" Value="Black"/>
+    <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource BlackBrush}"/>
+    <Setter Property="Foreground" Value="{StaticResource BlackBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -159,9 +159,9 @@
 
   <Style x:Key="RemoveButtonStyle" TargetType="{x:Type Button}">
     <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-    <Setter Property="Background" Value="Red"/>
-    <Setter Property="BorderBrush" Value="WhiteSmoke"/>
-    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="Background" Value="{StaticResource RedBrush}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource WhiteSmokeBrush}"/>
+    <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
