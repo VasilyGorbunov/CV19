@@ -58,7 +58,7 @@ namespace CV19.ViewModels
     /// </summary>
     public CountriesStatisticViewModel() : this(null)
     {
-      if(!App.IsDedignMode)
+      if(!App.IsDesignMode)
         throw new InvalidOperationException("Вызов отладочного конструктора");
 
       _countries = Enumerable.Range(1, 10)
