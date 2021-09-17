@@ -13,7 +13,7 @@
         mc:Ignorable="d"
         Title="{Binding Path=Title}" 
         WindowState="Maximized"
-        DataContext="{vm:MainWindowViewModel}"
+        DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
         Height="700" 
         Width="1200">
 

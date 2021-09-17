@@ -17,7 +17,7 @@ namespace CV19.ViewModels
   [MarkupExtensionReturnType(typeof(MainWindowViewModel))]
   public class MainWindowViewModel : ViewModel
   {
-    public CountriesStatisticViewModel CountriesStatistic { get; }
+    
     #region Свойства
 
     public ObservableCollection<Group> Groups { get; }
@@ -258,9 +258,12 @@ namespace CV19.ViewModels
 
     #region Конструктор
 
-    public MainWindowViewModel()
+    public CountriesStatisticViewModel CountriesStatistic { get; }
+
+    public MainWindowViewModel( CountriesStatisticViewModel statistic)
     {
-      CountriesStatistic = new CountriesStatisticViewModel(this);
+      CountriesStatistic = statistic;
+      statistic.MainModel = this;
 
       #region Студенты
 
