@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using CV19.Infrastructure.Commands;
 using CV19.Models;
-using CV19.Services;
+using CV19.Services.Interfaces;
 using CV19.ViewModels.Base;
 
 namespace CV19.ViewModels
 {
   public class CountriesStatisticViewModel: ViewModel
   {
-    private readonly DataService _dataService;
+    private readonly IDataService _dataService;
     
 
     #region Properties
@@ -79,7 +76,7 @@ namespace CV19.ViewModels
     //}
 
     public MainWindowViewModel MainModel { get; internal set; }
-    public CountriesStatisticViewModel(DataService dataService)
+    public CountriesStatisticViewModel(IDataService dataService)
     {
       _dataService = dataService;
 

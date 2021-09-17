@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using CV19.Services;
+using CV19.Services.Interfaces;
 using CV19.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,7 +38,7 @@ namespace CV19
 
     public static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
     {
-      services.AddSingleton<DataService>();
+      services.AddTransient<IDataService, DataService>();
 
       services.AddSingleton<MainWindowViewModel>();
       services.AddSingleton<CountriesStatisticViewModel>();
