@@ -10,6 +10,7 @@
         xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:views="clr-namespace:CV19.Views"
+        xmlns:components="clr-namespace:CV19.Components"
         mc:Ignorable="d"
         Title="{Binding Path=Title}" 
         WindowState="Maximized"
@@ -86,6 +87,28 @@
           </StackPanel>
         </TabItem.Header>
         <views:CountriesStatisticView DataContext="{Binding CountriesStatistic}"/>
+      </TabItem>
+      <!--#endregion-->
+      <!--#region Индикатор -->
+      <TabItem HorizontalAlignment="Right" Width="93">
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <fa:SvgAwesome Height="14" Icon="Solid_TachometerAlt" Margin="0 0 5 0" Foreground="DarkSlateBlue"/>
+            <TextBlock Text="Индикатор"/>
+          </StackPanel>
+        </TabItem.Header>
+        <StackPanel>
+          <components:GaugeIndicator VerticalAlignment="Center"
+                                     HorizontalContentAlignment="Center"
+                                     Width="100"
+                                     Height="100"
+                                     Value="{Binding FuelCount}"/>
+
+          <Slider Minimum="0"
+                  Maximum="100"
+                  MaxWidth="300"
+                  Value="{Binding FuelCount}"/>
+        </StackPanel>
       </TabItem>
       <!--#endregion-->
       <!--#region Файловая система -->

@@ -179,6 +179,20 @@ namespace CV19.ViewModels
     } 
     #endregion
 
+    #region FuelCount : double - Указатель топлива
+
+    /// <summary>Указатель топлива</summary>
+    private double _fuelCount;
+
+    /// <summary>Указатель топлива</summary>
+    public double FuelCount
+    {
+      get => _fuelCount;
+      set => Set(ref _fuelCount, value);
+    }
+
+    #endregion
+
     #endregion
 
     #region Команды
