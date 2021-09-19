@@ -193,6 +193,20 @@ namespace CV19.ViewModels
 
     #endregion
 
+    #region Coefficient : double - Коэффициент
+
+    /// <summary>Коэффициент</summary>
+    private double _сoefficient = 1;
+
+    /// <summary>Коэффициент</summary>
+    public double Coefficient
+    {
+      get => _сoefficient;
+      set => Set(ref _сoefficient, value);
+    }
+
+    #endregion
+
     #endregion
 
     #region Команды
