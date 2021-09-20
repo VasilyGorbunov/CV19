@@ -17,7 +17,7 @@ namespace CV19.Infrastructure.Converters
       nameof(Value),
       typeof(double),
       typeof(ParametricMultiplicityValueConverter),
-      new PropertyMetadata(1.0));
+      new PropertyMetadata(1.0, (d,e) => {}));
 
     /// <summary>
     /// Прибавляемое значение

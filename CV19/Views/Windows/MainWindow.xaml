@@ -25,7 +25,7 @@
 
   <Window.InputBindings>
     <KeyBinding Modifiers="Control" Key="Q">
-      <KeyBinding.Command> 
+      <KeyBinding.Command>
         <cmd:CloseApplicationCommand/>
       </KeyBinding.Command>
     </KeyBinding>
@@ -99,16 +99,15 @@
           </StackPanel>
         </TabItem.Header>
         <StackPanel>
+          <StackPanel.Resources>
+            <converters:ParametricMultiplicityValueConverter x:Key="ParametricMultiplicityValueConverter" Value="{Binding Coefficient}"/>
+          </StackPanel.Resources>
           <components:GaugeIndicator VerticalAlignment="Center"
                                      HorizontalContentAlignment="Center"
                                      Width="100"
                                      Height="100">
             <components:GaugeIndicator.Value>
-              <Binding Path="FuelCount">
-                <Binding.Converter>
-                  <converters:ParametricMultiplicityValueConverter Value="{Binding Coefficient}"/>
-                </Binding.Converter>
-              </Binding>
+              <Binding Path="FuelCount" Converter="{StaticResource ParametricMultiplicityValueConverter}"/>
             </components:GaugeIndicator.Value>
           </components:GaugeIndicator>
 
@@ -246,7 +245,7 @@
 
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="decanat:Group">
-                    
+
                     <StackPanel Orientation="Horizontal">
                       <TextBlock Text="{Binding Name}" x:Name="TextView"/>
                       <TextBlock Text="{Binding Students.Count, StringFormat=[Студентов: {0}]}"
