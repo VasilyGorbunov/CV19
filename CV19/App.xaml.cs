@@ -36,14 +36,10 @@ namespace CV19
 
     public static IHost Host => _host ??= Program.CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
 
-    public static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
-    {
-      services.AddTransient<IDataService, DataService>();
-
-      services.AddSingleton<MainWindowViewModel>();
-      services.AddSingleton<CountriesStatisticViewModel>();
-
-    }
+    public static void ConfigureServices(HostBuilderContext host, IServiceCollection services) => 
+      services
+      .RegisterServices()
+        .RegisterViewModels();
 
     public static string CurrentDirectory => IsDesignMode 
       ? Path.GetDirectoryName(GetSourceCodePath())

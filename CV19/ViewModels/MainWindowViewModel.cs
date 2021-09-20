@@ -10,6 +10,7 @@ using System.Windows.Markup;
 using CV19.Infrastructure.Commands;
 using CV19.Models;
 using CV19.Models.Decanat;
+using CV19.Services.Interfaces;
 using CV19.ViewModels.Base;
 
 namespace CV19.ViewModels
@@ -287,10 +288,12 @@ namespace CV19.ViewModels
     #region Конструктор
 
     public CountriesStatisticViewModel CountriesStatistic { get; }
+    private readonly IAsyncDataService _asyncData;
 
-    public MainWindowViewModel( CountriesStatisticViewModel statistic)
+    public MainWindowViewModel( CountriesStatisticViewModel statistic, IAsyncDataService asyncData)
     {
       CountriesStatistic = statistic;
+      _asyncData = asyncData;
       statistic.MainModel = this;
 
       #region Студенты
