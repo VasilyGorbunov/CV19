@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -166,6 +167,21 @@ namespace CV19.ViewModels
     }
     #endregion
 
+    #region Результат длительной асинхронной операции
+
+    private string _dataValue;
+
+    /// <summary>
+    /// Результат длительной асинхронной операции
+    /// </summary>
+    public string DataValue
+    {
+      get => _dataValue;
+      private set => Set(ref _dataValue, value);
+    }
+
+    #endregion
+
     public DirectoryViewModel DiskRootDir { get; } = new DirectoryViewModel("Z:\\");
 
     #region Выбранная директория
@@ -288,11 +304,16 @@ namespace CV19.ViewModels
     /// <summary>Запуск процесса</summary>
     public ICommand StartProcessCommand { get; }
 
-    private bool CanStartProcessCommandExecute(object p) => true;
+    private static bool CanStartProcessCommandExecute(object p) => true;
 
     private void OnStartProcessCommandExecuted(object p)
     {
+      new Thread(ComputeValue).Start();
+    }
 
+    private void ComputeValue()
+    {
+      DataValue = _asyncData.GetResult(DateTime.Now);
     }
 
     #endregion
@@ -303,7 +324,7 @@ namespace CV19.ViewModels
     public ICommand StopProcessCommand { get; }
 
     // Проверка возможности выполнения
-    private bool CanStopProcessCommandExecute(object p) => true;
+    private static bool CanStopProcessCommandExecute(object p) => true;
 
     // Логика выполнения
     private void OnStopProcessCommandExecuted(object p)
