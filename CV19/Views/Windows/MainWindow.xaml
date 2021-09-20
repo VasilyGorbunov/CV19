@@ -90,8 +90,23 @@
         <views:CountriesStatisticView DataContext="{Binding CountriesStatistic}"/>
       </TabItem>
       <!--#endregion-->
+      <TabItem Header="Async Data">
+        <DockPanel>
+          <UniformGrid DockPanel.Dock="Top" HorizontalAlignment="Left" Rows="1" Margin="5">
+            <Button Margin="5" Padding="20, 5" Content="Запуск"/>
+            <Button Margin="5" Padding="20, 5" Content="Остановка"/>
+          </UniformGrid>
+          <ProgressBar DockPanel.Dock="Top" VerticalAlignment="Top" Height="20" Margin="10"/>
+          <Grid>
+            <TextBlock VerticalAlignment="Center" 
+                       HorizontalAlignment="Center" 
+                       Text="123"
+                       FontSize="60 "/>
+          </Grid>
+        </DockPanel>
+      </TabItem>
       <!--#region Индикатор -->
-      <TabItem HorizontalAlignment="Right" Width="93">
+      <TabItem>
         <TabItem.Header>
           <StackPanel Orientation="Horizontal">
             <fa:SvgAwesome Height="14" Icon="Solid_TachometerAlt" Margin="0 0 5 0" Foreground="DarkSlateBlue"/>
