@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,30 @@ namespace CV19WPFTest
     public MainWindow()
     {
       InitializeComponent();
+    }
+
+    private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+    {
+      new Thread(ComputeValue).Start();
+    }
+
+    private void ComputeValue()
+    {
+      var value = LongProcess(DateTime.Now);
+
+      if(resultTextBlock.Dispatcher.CheckAccess())
+        resultTextBlock.Text = value;
+      else
+      {
+        //resultTextBlock.Dispatcher.Invoke(() => resultTextBlock.Text = value);
+        resultTextBlock.Dispatcher.BeginInvoke(new Action(() => resultTextBlock.Text = value));
+      }
+    }
+
+    private static string LongProcess(DateTime time)
+    {
+      Thread.Sleep(3000);
+      return $"Result - {time}";
     }
   }
 }

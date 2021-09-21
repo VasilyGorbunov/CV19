@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -10,6 +11,7 @@ using System.Windows.Markup;
 using CV19.Infrastructure.Commands;
 using CV19.Models;
 using CV19.Models.Decanat;
+using CV19.Services.Interfaces;
 using CV19.ViewModels.Base;
 
 namespace CV19.ViewModels
@@ -17,7 +19,7 @@ namespace CV19.ViewModels
   [MarkupExtensionReturnType(typeof(MainWindowViewModel))]
   public class MainWindowViewModel : ViewModel
   {
-    public CountriesStatisticViewModel CountriesStatistic { get; }
+
     #region Свойства
 
     public ObservableCollection<Group> Groups { get; }
@@ -49,7 +51,7 @@ namespace CV19.ViewModels
       get => _selectedGroup;
       set
       {
-        if(!Set(ref _selectedGroup, value)) return;
+        if (!Set(ref _selectedGroup, value)) return;
         _selectedGroupStudents.Source = value?.Students;
         OnPropertyChanged(nameof(SelectedGroupStudents));
       }
@@ -57,7 +59,7 @@ namespace CV19.ViewModels
     #endregion
 
     #region Номер выбранной вкладки
-    private int _selectedPageIndex = 0;
+    private int _selectedPageIndex = 1;
     /// <summary>
     /// Номер выбранной вкладки
     /// </summary>
@@ -113,7 +115,7 @@ namespace CV19.ViewModels
     #region Виртуализация
 
     public IEnumerable<Student> TestStudents => Enumerable
-      .Range(1, App.IsDedignMode ? 10 : 100_000)
+      .Range(1, App.IsDesignMode ? 10 : 100_000)
       .Select(i => new Student
       {
         Name = $"Имя {i}",
@@ -132,7 +134,7 @@ namespace CV19.ViewModels
       get => _studentFilterText;
       set
       {
-        if(!Set(ref _studentFilterText, value)) return;
+        if (!Set(ref _studentFilterText, value)) return;
         _selectedGroupStudents.View.Refresh();
       }
     }
@@ -158,11 +160,26 @@ namespace CV19.ViewModels
         return;
       }
 
-      if(student.Name.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
-      if(student.Surname.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+      if (student.Name.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+      if (student.Surname.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
 
       e.Accepted = false;
     }
+    #endregion
+
+    #region Результат длительной асинхронной операции
+
+    private string _dataValue;
+
+    /// <summary>
+    /// Результат длительной асинхронной операции
+    /// </summary>
+    public string DataValue
+    {
+      get => _dataValue;
+      private set => Set(ref _dataValue, value);
+    }
+
     #endregion
 
     public DirectoryViewModel DiskRootDir { get; } = new DirectoryViewModel("Z:\\");
@@ -176,7 +193,35 @@ namespace CV19.ViewModels
     {
       get => _selectedDirectory;
       set => Set(ref _selectedDirectory, value);
-    } 
+    }
+    #endregion
+
+    #region FuelCount : double - Указатель топлива
+
+    /// <summary>Указатель топлива</summary>
+    private double _fuelCount;
+
+    /// <summary>Указатель топлива</summary>
+    public double FuelCount
+    {
+      get => _fuelCount;
+      set => Set(ref _fuelCount, value);
+    }
+
+    #endregion
+
+    #region Coefficient : double - Коэффициент
+
+    /// <summary>Коэффициент</summary>
+    private double _сoefficient = 1;
+
+    /// <summary>Коэффициент</summary>
+    public double Coefficient
+    {
+      get => _сoefficient;
+      set => Set(ref _сoefficient, value);
+    }
+
     #endregion
 
     #endregion
@@ -254,13 +299,54 @@ namespace CV19.ViewModels
     }
     #endregion
 
+    #region Command StartProcessCommand - Запуск процесса
+
+    /// <summary>Запуск процесса</summary>
+    public ICommand StartProcessCommand { get; }
+
+    private static bool CanStartProcessCommandExecute(object p) => true;
+
+    private void OnStartProcessCommandExecuted(object p)
+    {
+      new Thread(ComputeValue).Start();
+    }
+
+    private void ComputeValue()
+    {
+      DataValue = _asyncData.GetResult(DateTime.Now);
+    }
+
+    #endregion
+
+    #region Command StopProcessCommand - Остановка процесса
+
+    /// <summary>Остановка процесса</summary>
+    public ICommand StopProcessCommand { get; }
+
+    // Проверка возможности выполнения
+    private static bool CanStopProcessCommandExecute(object p) => true;
+
+    // Логика выполнения
+    private void OnStopProcessCommandExecuted(object p)
+    {
+
+    }
+
+    #endregion
+
+
     #endregion
 
     #region Конструктор
 
-    public MainWindowViewModel()
+    public CountriesStatisticViewModel CountriesStatistic { get; }
+    private readonly IAsyncDataService _asyncData;
+
+    public MainWindowViewModel(CountriesStatisticViewModel statistic, IAsyncDataService asyncData)
     {
-      CountriesStatistic = new CountriesStatisticViewModel(this);
+      CountriesStatistic = statistic;
+      _asyncData = asyncData;
+      statistic.MainModel = this;
 
       #region Студенты
 
@@ -312,7 +398,7 @@ namespace CV19.ViewModels
       #region Фильтрация, сортировка студентов
       _selectedGroupStudents.Filter += OnStudentsFilter;
       _selectedGroupStudents.SortDescriptions.Add(
-        new SortDescription("Name", ListSortDirection.Descending)); 
+        new SortDescription("Name", ListSortDirection.Descending));
       _selectedGroupStudents.GroupDescriptions.Add(
         new PropertyGroupDescription("Name"));
       #endregion
@@ -335,10 +421,18 @@ namespace CV19.ViewModels
         OnDeleteGroupCommandExecuted,
         CanDeleteGroupCommandExecute);
 
+      StartProcessCommand = new LambdaCommand(
+        OnStartProcessCommandExecuted,
+        CanStartProcessCommandExecute);
+
+      StopProcessCommand = new LambdaCommand(
+        OnStopProcessCommandExecuted,
+        CanStopProcessCommandExecute);
+
       #endregion
     }
 
-    
+
 
     #endregion
   }

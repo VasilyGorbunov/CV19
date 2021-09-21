@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using CV19.Infrastructure.Commands;
 using CV19.Models;
-using CV19.Services;
+using CV19.Services.Interfaces;
 using CV19.ViewModels.Base;
 
 namespace CV19.ViewModels
 {
   public class CountriesStatisticViewModel: ViewModel
   {
-    private readonly DataService _dataService;
-    private MainWindowViewModel MainModel { get; }
+    private readonly IDataService _dataService;
+    
 
     #region Properties
 
@@ -56,32 +53,32 @@ namespace CV19.ViewModels
     /// <summary>
     /// Отладочный конструктор для визуального редактора
     /// </summary>
-    public CountriesStatisticViewModel() : this(null)
-    {
-      if(!App.IsDedignMode)
-        throw new InvalidOperationException("Вызов отладочного конструктора");
+    //public CountriesStatisticViewModel() : this(null)
+    //{
+    //  if(!App.IsDesignMode)
+    //    throw new InvalidOperationException("Вызов отладочного конструктора");
 
-      _countries = Enumerable.Range(1, 10)
-        .Select(i => new CountryInfo()
-        {
-          Name = $"Country {i}",
-          Provinces = Enumerable.Range(1, 10).Select(j => new PlaceInfo()
-          {
-            Name = $"Province {j}",
-            Location = new Point(i, j),
-            Counts = Enumerable.Range(1, 10).Select(k => new ConfirmedCount()
-            {
-              Date = DateTime.Now.Subtract(TimeSpan.FromDays(100 - j)),
-              Count = k
-            }).ToArray()
-          }).ToArray()
-        }).ToArray();
-    }
+    //  _countries = Enumerable.Range(1, 10)
+    //    .Select(i => new CountryInfo()
+    //    {
+    //      Name = $"Country {i}",
+    //      Provinces = Enumerable.Range(1, 10).Select(j => new PlaceInfo()
+    //      {
+    //        Name = $"Province {j}",
+    //        Location = new Point(i, j),
+    //        Counts = Enumerable.Range(1, 10).Select(k => new ConfirmedCount()
+    //        {
+    //          Date = DateTime.Now.Subtract(TimeSpan.FromDays(100 - j)),
+    //          Count = k
+    //        }).ToArray()
+    //      }).ToArray()
+    //    }).ToArray();
+    //}
 
-    public CountriesStatisticViewModel(MainWindowViewModel mainModel)
+    public MainWindowViewModel MainModel { get; internal set; }
+    public CountriesStatisticViewModel(IDataService dataService)
     {
-      MainModel = mainModel;
-      _dataService = new DataService();
+      _dataService = dataService;
 
       RefreshDataCommand = new LambdaCommand(
         OnRefreshDataCommandExecuted);
