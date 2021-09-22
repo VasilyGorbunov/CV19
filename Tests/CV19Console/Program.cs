@@ -12,22 +12,37 @@ namespace CV19Console
       var thread = new Thread(ThreadMethod);
       thread.Name = "Other thread";
       thread.IsBackground = true;
-      thread.Start();
+      thread.Start(42);
+
+      var count = 5;
+      var msg = "Hello Thread";
+      var tm = 150;
+
+      new Thread(() => PrintMethod(msg, count, tm)) {IsBackground = true}.Start();
 
       CheckThread();
 
-      for (var i = 0; i < 100; i++)
+      for (var i = 0; i < 10; i++)
       {
         Thread.Sleep(100);
         Console.WriteLine(i);
       }
-
-
       Console.ReadLine();
     }
 
-    private static void ThreadMethod()
+    private static void PrintMethod(string message, int count, int timeout)
     {
+      for (int i = 0; i < count; i++)
+      {
+        Console.WriteLine(message);
+        Thread.Sleep(timeout);
+      }
+    }
+
+    private static void ThreadMethod(object parameter)
+    {
+      var value = (int) parameter;
+      Console.WriteLine(value);
       CheckThread();
 
       while (true)
