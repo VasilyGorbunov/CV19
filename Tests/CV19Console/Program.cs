@@ -1,32 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 
 namespace CV19Console
 {
   class Program
   {
+    private static bool _threadUpdate = true;
     static void Main()
     {
       Thread.CurrentThread.Name = "Main Thread";
 
-      //var thread = new Thread(ThreadMethod);
-      //thread.Name = "Other thread";
-      //thread.IsBackground = true;
-      //thread.Start(42);
+      var clockThread = new Thread(ThreadMethod);
+      clockThread.Name = "Other thread";
+      clockThread.IsBackground = true;
+      clockThread.Start(42);
 
-      var count = 5;
-      var msg = "Hello Thread";
-      var tm = 150;
+      //var count = 5;
+      //var msg = "Hello Thread";
+      //var tm = 150;
 
-      new Thread(() => PrintMethod(msg, count, tm)) {IsBackground = true}.Start();
+      //new Thread(() => PrintMethod(msg, count, tm)) {IsBackground = true}.Start();
 
-      CheckThread();
+      //CheckThread();
+
+      //foreach (var thread in threads)
+      //{
+      //  thread.Start();
+      //}
+
+      var values = new List<int>();
+      var threads = new Thread[10];
+      object object_lock = new object();
+
+      for (int i = 0; i < threads.Length; i++)
+      {
+        threads[i] = new Thread(() =>
+        {
+          for (int j = 0; j < 10; j++)
+          {
+            lock (object_lock)
+            {
+              values.Add(Thread.CurrentThread.ManagedThreadId);
+            }
+            Thread.Sleep(1);
+          }
+        });
+      }
 
       foreach (var thread in threads)
       {
         thread.Start();
       }
+
+
+      if(!clockThread.Join(200))
+        clockThread.Interrupt();
+
+      Console.WriteLine(string.Join(",", values));
       Console.ReadLine();
     }
 
@@ -45,10 +77,10 @@ namespace CV19Console
       Console.WriteLine(value);
       CheckThread();
 
-      while (true)
+      while (_threadUpdate)
       {
         Thread.Sleep(100);
-        Console.Title = DateTime.Now.ToString();
+        Console.Title = DateTime.Now.ToString(CultureInfo.InvariantCulture);
       }
     }
 
