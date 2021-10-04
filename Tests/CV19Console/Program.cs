@@ -15,44 +15,18 @@ namespace CV19Console
       //thread.IsBackground = true;
       //thread.Start(42);
 
-      //var count = 5;
-      //var msg = "Hello Thread";
-      //var tm = 150;
+      var count = 5;
+      var msg = "Hello Thread";
+      var tm = 150;
 
-      //new Thread(() => PrintMethod(msg, count, tm)) {IsBackground = true}.Start();
+      new Thread(() => PrintMethod(msg, count, tm)) {IsBackground = true}.Start();
 
-      //CheckThread();
-
-      //for (var i = 0; i < 10; i++)
-      //{
-      //  Thread.Sleep(100);
-      //  Console.WriteLine(i);
-      //}
-
-      var values = new List<int>();
-
-      var threads = new Thread[10];
-      object lock_object = new object();
-
-      for (int i = 0; i < threads.Length; i++)
-      {
-        threads[i] = new Thread(() =>
-        {
-          for (int j = 0; j < 10; j++)
-          {
-            lock(lock_object)
-              values.Add(Thread.CurrentThread.ManagedThreadId);
-          }
-        });
-      }
+      CheckThread();
 
       foreach (var thread in threads)
       {
         thread.Start();
       }
-
-      
-      Console.WriteLine(String.Join(",", values));
       Console.ReadLine();
     }
 
