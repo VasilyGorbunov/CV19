@@ -10,6 +10,10 @@ namespace CV19Console
     private static bool _threadUpdate = true;
     static void Main()
     {
+
+      WebServerTest.Run();
+      return;
+
       Thread.CurrentThread.Name = "Main Thread";
 
       var clockThread = new Thread(ThreadMethod);
