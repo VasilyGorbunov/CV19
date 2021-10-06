@@ -58,6 +58,8 @@ namespace CV19Console
       if(!clockThread.Join(200))
         clockThread.Interrupt();
 
+      Mutex mutex = new Mutex();
+
       Console.WriteLine(string.Join(",", values));
       Console.ReadLine();
     }
