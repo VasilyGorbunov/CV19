@@ -59,7 +59,7 @@ namespace CV19.ViewModels
     #endregion
 
     #region Номер выбранной вкладки
-    private int _selectedPageIndex = 1;
+    private int _selectedPageIndex = 0;
     /// <summary>
     /// Номер выбранной вкладки
     /// </summary>
@@ -341,10 +341,15 @@ namespace CV19.ViewModels
 
     public CountriesStatisticViewModel CountriesStatistic { get; }
     private readonly IAsyncDataService _asyncData;
+    public WebServerViewModel WebServer { get; }
 
-    public MainWindowViewModel(CountriesStatisticViewModel statistic, IAsyncDataService asyncData)
+    public MainWindowViewModel(
+      CountriesStatisticViewModel statistic, 
+      IAsyncDataService asyncData,
+      WebServerViewModel webServer)
     {
       CountriesStatistic = statistic;
+      WebServer = webServer;
       _asyncData = asyncData;
       statistic.MainModel = this;
 
