@@ -70,10 +70,14 @@ namespace CV19.Web
       var listener = _listener;
       listener.Start();
 
+      HttpListenerContext context = null;
+
       while (_enabled)
       {
-        var context = await listener.GetContextAsync().ConfigureAwait(false);
-        ProcessRequest(context);
+        var getContextTask = listener.GetContextAsync();
+        if (context != null)
+          ProcessRequest(context);
+        context = await getContextTask.ConfigureAwait(false);
       }
 
       listener.Stop();
