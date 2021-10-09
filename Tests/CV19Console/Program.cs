@@ -1,74 +1,99 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace CV19Console
 {
   class Program
   {
-    private const string data_url =
-      @"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
-
-    private static async Task<Stream> GetDataStream()
+    private static bool _threadUpdate = true;
+    static void Main()
     {
-      var client = new HttpClient();
-      var response = await client.GetAsync(data_url, HttpCompletionOption.ResponseHeadersRead);
-      return await response.Content.ReadAsStreamAsync();
-    }
 
-    private static IEnumerable<string> GetDataLines()
-    {
-      using var data_stream =  GetDataStream().Result;
-      using var data_reader = new StreamReader(data_stream);
+      WebServerTest.Run();
+      return;
 
-      while (!data_reader.EndOfStream)
+      Thread.CurrentThread.Name = "Main Thread";
+
+      var clockThread = new Thread(ThreadMethod);
+      clockThread.Name = "Other thread";
+      clockThread.IsBackground = true;
+      clockThread.Start(42);
+
+      //var count = 5;
+      //var msg = "Hello Thread";
+      //var tm = 150;
+
+      //new Thread(() => PrintMethod(msg, count, tm)) {IsBackground = true}.Start();
+
+      //CheckThread();
+
+      //foreach (var thread in threads)
+      //{
+      //  thread.Start();
+      //}
+
+      var values = new List<int>();
+      var threads = new Thread[10];
+      object object_lock = new object();
+
+      for (int i = 0; i < threads.Length; i++)
       {
-        var line = data_reader.ReadLine();
-        if(string.IsNullOrWhiteSpace(line)) continue;
-        yield return line
-          .Replace("Korea,", "Korea -")
-          .Replace("Bonaire,", "Bonaire -");
+        threads[i] = new Thread(() =>
+        {
+          for (int j = 0; j < 10; j++)
+          {
+            lock (object_lock)
+            {
+              values.Add(Thread.CurrentThread.ManagedThreadId);
+            }
+            Thread.Sleep(1);
+          }
+        });
       }
-    }
 
-    private static DateTime[] GetDates() => GetDataLines()
-      .First()
-      .Split(',')
-      .Skip(4)
-      .Select(s => DateTime.Parse(s, CultureInfo.InvariantCulture))
-      .ToArray();
-
-    private static IEnumerable<(string country, string province, int[] counts)> GetData()
-    {
-      var lines = GetDataLines()
-        .Skip(1)
-        .Select(line => line.Split(','));
-
-      foreach (var row in lines)
+      foreach (var thread in threads)
       {
-        var province = row[0].Trim();
-        var country_name = row[1].Trim(' ', '"');
-        var counts = row.Skip(4).Select(int.Parse).ToArray();
-
-        yield return (country_name, province, counts);
+        thread.Start();
       }
 
-    }
-    
 
-    static void  Main(string[] args)
-    {
-      var russia_data = GetData()
-        .First(v => v.country.Equals("Russia", StringComparison.InvariantCulture));
+      if(!clockThread.Join(200))
+        clockThread.Interrupt();
 
-      Console.WriteLine(string.Join("\r\n", GetDates().Zip(
-          russia_data.counts, (date, count) => $"{date:dd.MM.yyyy} - {count}")));
-      
+      Mutex mutex = new Mutex();
+
+      Console.WriteLine(string.Join(",", values));
       Console.ReadLine();
+    }
+
+    private static void PrintMethod(string message, int count, int timeout)
+    {
+      for (int i = 0; i < count; i++)
+      {
+        Console.WriteLine(message);
+        Thread.Sleep(timeout);
+      }
+    }
+
+    private static void ThreadMethod(object parameter)
+    {
+      var value = (int) parameter;
+      Console.WriteLine(value);
+      CheckThread();
+
+      while (_threadUpdate)
+      {
+        Thread.Sleep(100);
+        Console.Title = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+      }
+    }
+
+    public static void CheckThread()
+    {
+      var thread = Thread.CurrentThread;
+      Console.WriteLine($"{thread.ManagedThreadId}:{thread.Name}");
     }
   }
 }
