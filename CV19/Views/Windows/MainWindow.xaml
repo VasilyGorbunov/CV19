@@ -12,12 +12,19 @@
         xmlns:views="clr-namespace:CV19.Views"
         xmlns:components="clr-namespace:CV19.Components"
         xmlns:converters="clr-namespace:CV19.Infrastructure.Converters"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="{Binding Path=Title}" 
         WindowState="Maximized"
         DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
         Height="700" 
         Width="1200">
+
+  <i:Interaction.Triggers>
+    <i:EventTrigger EventName="Loaded">
+      <i:InvokeCommandAction Command="{Binding CountriesStatistic.RefreshDataCommand}"/>
+    </i:EventTrigger>
+  </i:Interaction.Triggers>
 
   <Window.Resources>
     <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
