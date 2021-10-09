@@ -76,16 +76,16 @@ namespace CV19.Web
       {
         var getContextTask = listener.GetContextAsync();
         if (context != null)
-          ProcessRequest(context);
+          ProcessRequestAsync(context);
         context = await getContextTask.ConfigureAwait(false);
       }
 
       listener.Stop();
     }
 
-    private void ProcessRequest(HttpListenerContext context)
+    private async void ProcessRequestAsync(HttpListenerContext context)
     {
-      _requestReceived?.Invoke(this, new RequestReceiverEventArgs(context));
+      await Task.Run(() => _requestReceived?.Invoke(this, new RequestReceiverEventArgs(context)));
     }
   }
 
