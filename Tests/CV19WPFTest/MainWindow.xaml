@@ -3,12 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:b="clr-namespace:CV19WPFTest.Behaviors"
         xmlns:local="clr-namespace:CV19WPFTest"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
   
-    <StackPanel>
-    <Button Content="start" Click="ButtonBase_OnClick"/>
-    <TextBlock Text="" x:Name="resultTextBlock"/>
-  </StackPanel>
+    <Grid>
+    <Button Content="start" 
+            Padding="30, 20"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Click="ButtonBase_OnClick">
+      
+    </Button>
+
+    <TextBlock Text="Text Block" x:Name="resultTextBlock">
+      <!--<i:Interaction.Behaviors>
+        <i:MouseDragElementBehavior/>
+      </i:Interaction.Behaviors>-->
+    </TextBlock>
+
+    <Canvas>
+      <Ellipse Canvas.Left="30" Canvas.Top="20"
+               Stroke="Red"
+               StrokeThickness="2"
+               Fill="DarkSlateBlue"
+               Width="20"
+               Height="20">
+        <i:Interaction.Behaviors>
+          <!--<i:MouseDragElementBehavior/>-->
+          <b:DragInCanvas/>
+        </i:Interaction.Behaviors>
+      </Ellipse>
+    </Canvas>
+  </Grid>
 </Window>
