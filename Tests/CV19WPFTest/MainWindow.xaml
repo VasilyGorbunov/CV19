@@ -33,9 +33,20 @@
                Height="20">
         <i:Interaction.Behaviors>
           <!--<i:MouseDragElementBehavior/>-->
-          <b:DragInCanvas/>
+          <b:DragInCanvas x:Name="EllipseDragBehavior"/>
         </i:Interaction.Behaviors>
       </Ellipse>
+      <Button Content="Close" Canvas.Left="361" Canvas.Top="77">
+        <i:Interaction.Behaviors>
+          <b:CloseWindow/>
+        </i:Interaction.Behaviors>
+      </Button>
+
+      <TextBlock Canvas.Left="10" Canvas.Top="40"
+                 Text="{Binding PositionX, ElementName=EllipseDragBehavior}"/>
+      <TextBlock Canvas.Left="10" Canvas.Top="60"
+                 Text="{Binding PositionY, ElementName=EllipseDragBehavior}"/>
     </Canvas>
+    
   </Grid>
 </Window>

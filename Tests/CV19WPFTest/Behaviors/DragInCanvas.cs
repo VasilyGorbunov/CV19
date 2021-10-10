@@ -11,6 +11,24 @@ namespace CV19WPFTest.Behaviors
     private Point _startPoint;
     private Canvas _canvas;
 
+    public static readonly DependencyProperty PositionXProperty = DependencyProperty.Register(
+      "PositionX", typeof(double), typeof(DragInCanvas), new PropertyMetadata(default(double)));
+
+    public double PositionX
+    {
+      get { return (double) GetValue(PositionXProperty); }
+      set { SetValue(PositionXProperty, value); }
+    }
+
+    public static readonly DependencyProperty PositionYProperty = DependencyProperty.Register(
+      "PositionY", typeof(double), typeof(DragInCanvas), new PropertyMetadata(default(double)));
+
+    public double PositionY
+    {
+      get { return (double) GetValue(PositionYProperty); }
+      set { SetValue(PositionYProperty, value); }
+    }
+
     protected override void OnAttached()
     {
       AssociatedObject.MouseLeftButtonDown += OnLeftButtonDown;
@@ -51,6 +69,9 @@ namespace CV19WPFTest.Behaviors
 
       obj.SetValue(Canvas.LeftProperty, delta.X);
       obj.SetValue(Canvas.TopProperty, delta.Y);
+
+      PositionX = delta.X;
+      PositionY = delta.Y;
     }
   }
 }
