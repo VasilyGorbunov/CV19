@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CV19.Views.Windows"
         mc:Ignorable="d"
         Style="{StaticResource CV19WindowStyle}"
+        Icon="../../Resources/save-as.ico"
         Title="TestWindow" Height="450" Width="800">
   <Grid>
     <Button VerticalAlignment="Top" 
