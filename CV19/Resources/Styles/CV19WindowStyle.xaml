@@ -1,5 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:b="clr-namespace:CV19.Infrastructure.Behaviors">
    
   <Style x:Key="CV19WindowHeaderButtonStyle" TargetType="{x:Type Button}">
     <Setter Property="Focusable" Value="True"/>
@@ -65,18 +67,27 @@
                 <StackPanel.Resources>
                   <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CV19WindowHeaderButtonStyle}"/>
                   <Style TargetType="{x:Type Path}">
-                    <Setter Property="StrokeThickness" Value="1"/>
+                    <Setter Property="StrokeThickness" Value="2"/>
                     <Setter Property="Stroke" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
                     <Setter Property="Margin" Value="10"/>
                   </Style>
                 </StackPanel.Resources>
                 <Button>
+                  <i:Interaction.Behaviors>
+                    <b:MinimizeWindow/>
+                  </i:Interaction.Behaviors>
                   <Path Data="{StaticResource MinimizeButtonIconGeometry}"/>
                 </Button>
                 <Button>
+                  <i:Interaction.Behaviors>
+                    <b:WindowStateChange/>
+                  </i:Interaction.Behaviors>
                   <Path Data="{StaticResource MaximizeToMaxButtonIconGeometry}"/>
                 </Button>
                 <Button Foreground="Red">
+                  <i:Interaction.Behaviors>
+                    <b:CloseWindow/>
+                  </i:Interaction.Behaviors>
                   <Path Data="{StaticResource CloseButtonIconGeometry}"/>
                 </Button>
               </StackPanel>
