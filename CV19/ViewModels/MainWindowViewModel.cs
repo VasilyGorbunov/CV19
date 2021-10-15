@@ -59,7 +59,7 @@ namespace CV19.ViewModels
     #endregion
 
     #region Номер выбранной вкладки
-    private int _selectedPageIndex = 0;
+    private int _selectedPageIndex = 4;
     /// <summary>
     /// Номер выбранной вкладки
     /// </summary>
