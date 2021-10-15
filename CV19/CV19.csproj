@@ -8,19 +8,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\save-as.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Data\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FontAwesome5" Version="2.1.4" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.0.0" />
     <PackageReference Include="XAML.MapControl" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CV19.Web\CV19.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\save-as.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Infrastructure\Extensions\DependencyObjectExtensions.cs">
+      <CustomToolNamespace></CustomToolNamespace>
+    </Compile>
   </ItemGroup>
 
 </Project>

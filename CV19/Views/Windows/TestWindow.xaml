@@ -1,0 +1,19 @@
+﻿<Window x:Class="CV19.Views.Windows.TestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CV19.Views.Windows"
+        mc:Ignorable="d"
+        Style="{StaticResource CV19WindowStyle}"
+        Icon="../../Resources/save-as.ico"
+        Title="TestWindow" Height="450" Width="800">
+  <Grid>
+    <Button VerticalAlignment="Top" 
+            HorizontalAlignment="Left" 
+            Margin="30, 40"
+            Padding="20, 5"
+            Content="Button"/>
+    <Ellipse HorizontalAlignment="Left" Height="20" Margin="239,100,0,0" Stroke="DimGray" VerticalAlignment="Top" Width="40" Fill="OrangeRed" StrokeThickness="2"/>
+  </Grid>
+</Window>
