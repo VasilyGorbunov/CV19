@@ -1,4 +1,5 @@
 ﻿using CV19.Services.Interfaces;
+using CV19.Services.Students;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CV19.Services
@@ -13,6 +14,7 @@ namespace CV19.Services
 
       services.AddSingleton<StudentsRepository>();
       services.AddSingleton<GroupsPepository>();
+      services.AddSingleton<StudentsManager>();
 
       return services;
     }
