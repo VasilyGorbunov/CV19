@@ -11,7 +11,7 @@ namespace CV19.Services.Interfaces
     IEnumerable<T> GetAll();
 
     T Get(int id) => GetAll().FirstOrDefault(item => item.Id == id);
-    void Remove(T item);
+    bool Remove(T item);
     void Update(int id, T item);
   }
 }
