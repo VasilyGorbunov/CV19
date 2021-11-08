@@ -121,6 +121,25 @@ namespace CV19.ViewModels
     }
     #endregion
 
+    #region Тестовая команда
+    private ICommand _testCommand;
+
+    /// <summary>
+    /// Тестовая команда
+    /// </summary>
+    public ICommand TestCommand => _testCommand ??= new LambdaCommand(
+      OnTestCommandExecuted,
+      CanTestCommandExecute);
+
+    private static bool CanTestCommandExecute(object p) => true;
+
+    private void OnTestCommandExecuted(object p)
+    {
+      var value = _userDialog.GetStringValue("Введите строку", "123", "Значение по умолчанию");
+      _userDialog.ShowInformation($"Введено {value}", "123");
+    }
+    #endregion
+
     #endregion
 
     #region Constructors
