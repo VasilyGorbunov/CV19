@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using CV19.Models.Decanat;
 using CV19.Services.Interfaces;
@@ -59,7 +60,9 @@ namespace CV19.Services
         LastName = student.Surname,
         Patronymic = student.Patronymic,
         Rating = student.Rating,
-        Birthday = student.Birthday
+        Birthday = student.Birthday,
+        Owner = Application.Current.Windows.OfType<StudentsManagementWindow>().FirstOrDefault(),
+        WindowStartupLocation = WindowStartupLocation.CenterOwner
       };
 
       if (dlg.ShowDialog() != true)

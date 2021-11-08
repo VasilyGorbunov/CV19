@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+
 using CV19.Infrastructure.Commands;
 using CV19.Models.Decanat;
 using CV19.Services.Interfaces;
@@ -103,7 +104,19 @@ namespace CV19.ViewModels
 
     private void OnCreateNewStudentCommandExecuted(object p)
     {
-      var group = (Group) p;
+      var group = (Group)p;
+
+      var student = new Student();
+
+      if (!_userDialog.Edit(student) || _studentsManager.Create(student, group.Name))
+      {
+        OnPropertyChanged(nameof(Students));
+        return;
+      }
+
+      if (_userDialog.Confirm("Не удалось создать студента. Повторить", "Менеджер студентов"))
+        OnCreateNewStudentCommandExecuted(p);
+
 
     }
     #endregion

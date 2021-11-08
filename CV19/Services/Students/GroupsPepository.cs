@@ -1,4 +1,5 @@
-﻿using CV19.Models.Decanat;
+﻿using System.Linq;
+using CV19.Models.Decanat;
 using CV19.Services.Base;
 
 namespace CV19.Services.Students
@@ -12,5 +13,7 @@ namespace CV19.Services.Students
       destination.Name = source.Name;
       destination.Description = source.Description;
     }
+
+    public Group Get(string groupName) => GetAll().FirstOrDefault(g => g.Name == groupName);
   }
 }
