@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Input;
+using CV19.Infrastructure.Commands;
 using CV19.Models.Decanat;
 using CV19.Services.Students;
 using CV19.ViewModels.Base;
@@ -9,6 +11,7 @@ namespace CV19.ViewModels
   {
     private readonly StudentsManager _studentsManager;
 
+    #region Public Properties
     #region Title: string - Заголовок окна
     /// <summary>
     /// Заголовок окна
@@ -47,12 +50,57 @@ namespace CV19.ViewModels
     /// <summary>
     /// Выбранный студент
     /// </summary>
-    public Student SelectedStudent { get => _selectedStudent; set => Set(ref _selectedStudent, value); } 
+    public Student SelectedStudent { get => _selectedStudent; set => Set(ref _selectedStudent, value); }
     #endregion
 
     public IEnumerable<Student> Students => _studentsManager.Students;
     public IEnumerable<Group> Groups => _studentsManager.Groups;
+    #endregion
 
-    public StudentsManagementViewModel(StudentsManager studentsManager) => _studentsManager = studentsManager;
+    #region Commands
+
+    #region Редактирование студента
+    private ICommand _editStudentCommand;
+
+    /// <summary>
+    /// Редактирование студента
+    /// </summary>
+    public ICommand EditStudentCommand => _editStudentCommand ??= new LambdaCommand(
+      OnEditStudentCommandExecuted,
+      CanEditStudentCommandExecute);
+
+    private bool CanEditStudentCommandExecute(object p) => p is Student;
+
+    private void OnEditStudentCommandExecuted(object p)
+    {
+      var student = (Student)p;
+
+    }
+    #endregion
+
+    #region Создание нового студента
+    private ICommand _createNewStudentCommand;
+
+    /// <summary>
+    /// Создание нового студента
+    /// </summary>
+    public ICommand CreateNewStudentCommand => _createNewStudentCommand ??= new LambdaCommand(
+      OnCreateNewStudentCommandExecuted,
+      CanCreateNewStudentCommandExecute);
+
+    private static bool CanCreateNewStudentCommandExecute(object p) => p is Group;
+
+    private void OnCreateNewStudentCommandExecuted(object p)
+    {
+      var group = (Group) p;
+
+    }
+    #endregion
+
+    #endregion
+
+    #region Constructors
+    public StudentsManagementViewModel(StudentsManager studentsManager) => _studentsManager = studentsManager; 
+    #endregion
   }
 }
