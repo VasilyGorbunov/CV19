@@ -16,5 +16,7 @@ namespace CV19.Services.Students
       _students = students;
       _groups = groups;
     }
+
+    public void Update(Student student) => _students.Update(student.Id, student);
   }
 }

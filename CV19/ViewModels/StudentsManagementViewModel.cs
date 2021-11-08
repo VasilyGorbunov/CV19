@@ -1,15 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 using CV19.Infrastructure.Commands;
 using CV19.Models.Decanat;
+using CV19.Services.Interfaces;
 using CV19.Services.Students;
 using CV19.ViewModels.Base;
+using CV19.Views.Windows;
 
 namespace CV19.ViewModels
 {
   public class StudentsManagementViewModel : ViewModel
   {
     private readonly StudentsManager _studentsManager;
+    private readonly IUserDialogService _userDialog;
 
     #region Public Properties
     #region Title: string - Заголовок окна
@@ -73,8 +77,15 @@ namespace CV19.ViewModels
 
     private void OnEditStudentCommandExecuted(object p)
     {
-      var student = (Student)p;
-
+      if (_userDialog.Edit(p))
+      {
+        _studentsManager.Update((Student)p);
+        _userDialog.ShowInformation("Студент отредактирован", "Менеджер студентов");
+      }
+      else
+      {
+        _userDialog.ShowWarning("Отказ от редактирования", "Менеджер студентов");
+      }
     }
     #endregion
 
@@ -100,7 +111,12 @@ namespace CV19.ViewModels
     #endregion
 
     #region Constructors
-    public StudentsManagementViewModel(StudentsManager studentsManager) => _studentsManager = studentsManager; 
+    public StudentsManagementViewModel(StudentsManager studentsManager, IUserDialogService userDialog)
+    {
+      _studentsManager = studentsManager;
+      _userDialog = userDialog;
+    }
+
     #endregion
   }
 }
