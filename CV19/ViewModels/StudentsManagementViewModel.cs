@@ -38,7 +38,16 @@ namespace CV19.ViewModels
     {
       get => _selectedGroup;
       set => Set(ref _selectedGroup, value);
-    } 
+    }
+    #endregion
+
+    #region SelectedStudent : Student - Выбранный студент
+    private Student _selectedStudent;
+
+    /// <summary>
+    /// Выбранный студент
+    /// </summary>
+    public Student SelectedStudent { get => _selectedStudent; set => Set(ref _selectedStudent, value); } 
     #endregion
 
     public IEnumerable<Student> Students => _studentsManager.Students;
