@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CV19
+namespace CV19.Wpf.Test
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
