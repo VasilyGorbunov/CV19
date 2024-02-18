@@ -17,15 +17,15 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                <MenuItem Header="Выход"/>
+                <MenuItem Header="Выход" Command="{Binding CloseApplicationCommand}"/>
             </MenuItem>
             <MenuItem Header="Помощь">
                 <MenuItem Header="О программе"/>
             </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem>
-                <TextBlock Text="1234"/>
+            <StatusBarItem MinWidth="150" MaxWidth="350">
+                <TextBlock Text="{Binding Path=Status}"/>
             </StatusBarItem>
             <StatusBarItem>
                 <ProgressBar Width="150" Height="14" Value="45"/>
@@ -56,6 +56,11 @@
                              Fill="BurlyWood"
                              Stroke="SpringGreen"
                              StrokeThickness="7"/>
+
+                    <GridSplitter Grid.Row="0" Grid.Column="0"
+                                  Grid.RowSpan="2"
+                                  HorizontalAlignment="Right"
+                                  Width="2" Background="DarkGray"/>
 
                 </Grid>
             </TabItem>
