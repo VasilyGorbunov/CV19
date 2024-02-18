@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:l="clr-namespace:CV19"
         xmlns:vm="clr-namespace:CV19.ViewModels"
+        xmlns:command="clr-namespace:CV19.Infrastructure.Commands"
         mc:Ignorable="d"
         Title="{Binding Path=Title}" 
         Height="450" 
@@ -14,10 +15,23 @@
         <vm:MainWindowViewModel/>
     </Window.DataContext>
 
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="Q" Command="{Binding CloseApplicationCommand}"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <command:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
+    </Window.Resources>
+
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                <MenuItem Header="Выход" Command="{Binding CloseApplicationCommand}"/>
+                <MenuItem Header="Выход" Command="{StaticResource CloseApplicationCommand}"/>
+                <MenuItem Header="Выход 2">
+                    <MenuItem.Command>
+                        <command:CloseApplicationCommand/>
+                    </MenuItem.Command>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Помощь">
                 <MenuItem Header="О программе"/>
@@ -55,7 +69,12 @@
                              Margin="10"
                              Fill="BurlyWood"
                              Stroke="SpringGreen"
-                             StrokeThickness="7"/>
+                             StrokeThickness="7">
+                        <Ellipse.InputBindings>
+                            <MouseBinding Command="{Binding CloseApplicationCommand}"
+                                          MouseAction="LeftDoubleClick"/>
+                        </Ellipse.InputBindings>
+                    </Ellipse>
 
                     <GridSplitter Grid.Row="0" Grid.Column="0"
                                   Grid.RowSpan="2"
