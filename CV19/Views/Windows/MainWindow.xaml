@@ -14,8 +14,52 @@
         <vm:MainWindowViewModel/>
     </Window.DataContext>
 
-    <Grid>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="264"/>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Выход"/>
+            </MenuItem>
+            <MenuItem Header="Помощь">
+                <MenuItem Header="О программе"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="1234"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <ProgressBar Width="150" Height="14" Value="45"/>
+            </StatusBarItem>
+        </StatusBar>
+        <TabControl>
+            <TabItem Header="Вкладка 1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
-    </Grid>
+                    <Rectangle Grid.Row="0" Grid.Column="0"
+                               Margin="5 7"
+                               Fill="CornflowerBlue" 
+                               Stroke="DarkGoldenrod"
+                               StrokeThickness="5"
+                               RadiusX="5"
+                               RadiusY="7"/>
+
+                    <Ellipse Grid.Row="1" Grid.Column="1"
+                             Margin="10"
+                             Fill="BurlyWood"
+                             Stroke="SpringGreen"
+                             StrokeThickness="7"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Вкладка 2"/>
+        </TabControl>
+    </DockPanel>
 </Window>
