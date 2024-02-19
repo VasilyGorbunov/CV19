@@ -16,6 +16,20 @@ namespace CV19.ViewModels
 
         #region Properties
 
+
+
+        #region SelectedPageIndex : int - Выбранная вкладка в TabControl
+        /// <summary>
+        /// Выбранная вкладка в TabControl
+        /// </summary>
+        private int _SelectedPageIndex = 1;
+        /// <summary>
+        /// Выбранная вкладка в TabControl
+        /// </summary>
+        public int SelectedPageIndex { get => _SelectedPageIndex; set => Set(ref _SelectedPageIndex, value); }
+        #endregion
+
+
         #region TestDataPoints : IEnumerable<DataPoint> - Тестовые данные для графика
         /// <summary>
         /// Тестовые данные для графика
@@ -60,12 +74,24 @@ namespace CV19.ViewModels
         }
         #endregion
 
+        #region Change TabIndex Command
+        public ICommand ChangeTabIndexCommand { get; }
+
+        private bool CanChangeTabIndexCommandExecute(object p) => SelectedPageIndex >= 0;
+        private void OnChangeTabIndexCommandExecuted(object p)
+        {
+            if (p is null) return;
+            SelectedPageIndex += Convert.ToInt32(p);
+        }
+        #endregion
+
         #endregion
 
         public MainWindowViewModel()
         {
             #region Commands
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
+            ChangeTabIndexCommand = new LambdaCommand(OnChangeTabIndexCommandExecuted, CanChangeTabIndexCommandExecute);
             #endregion
 
             #region Генерация тестовых данных для графика

@@ -7,6 +7,7 @@
         xmlns:vm="clr-namespace:CV19.ViewModels"
         xmlns:command="clr-namespace:CV19.Infrastructure.Commands"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:oxy="http://oxyplot.org/wpf/contrib"
         mc:Ignorable="d"
         Title="{Binding Path=Title}" 
         Height="450" 
@@ -37,6 +38,20 @@
             <MenuItem Header="Помощь">
                 <MenuItem Header="О программе"/>
             </MenuItem>
+            <MenuItem Command="{Binding ChangeTabIndexCommand}" CommandParameter="-1">
+                <MenuItem.Header>
+                    <fa5:SvgAwesome Icon="Solid_ChevronCircleLeft" 
+                                    Height="12"
+                                    Foreground="DarkOrchid"/>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Command="{Binding ChangeTabIndexCommand}" CommandParameter="+1">
+                <MenuItem.Header>
+                    <fa5:SvgAwesome Icon="Solid_ChevronCircleRight" 
+                                    Height="12" 
+                                    Foreground="DarkOrchid"/>
+                </MenuItem.Header>
+            </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem MinWidth="150" MaxWidth="350">
@@ -45,8 +60,11 @@
             <StatusBarItem>
                 <ProgressBar Width="150" Height="14" Value="45"/>
             </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="{Binding Path=SelectedPageIndex}"/>
+            </StatusBarItem>
         </StatusBar>
-        <TabControl>
+        <TabControl SelectedIndex="{Binding SelectedPageIndex}">
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -54,6 +72,7 @@
                                         Height="13" 
                                         Foreground="Salmon"
                                         Margin="0 0 5 0"/>
+                        <TextBlock Text="Старт" Margin="3 0 0 0"/>
                     </StackPanel>
                 </TabItem.Header>
                 <Grid>
@@ -92,7 +111,24 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Вкладка 2"/>
+            <TabItem HorizontalAlignment="Left" Width="69">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <fa5:SvgAwesome Icon="Solid_ChartLine" Height="14" Foreground="RoyalBlue"/>
+                        <TextBlock Text="График" Margin="3 0 0 0"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <oxy:Plot>
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Left"/>
+                        <oxy:LinearAxis Position="Bottom"/>
+                    </oxy:Plot.Axes>
+                    <oxy:LineSeries ItemsSource="{Binding TestDataPoints}" 
+                                    DataFieldX="XValue"
+                                    DataFieldY="YValue"
+                                    Color="MediumVioletRed"/>
+                </oxy:Plot>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>
