@@ -10,8 +10,8 @@
         xmlns:oxy="http://oxyplot.org/wpf/contrib"
         mc:Ignorable="d"
         Title="{Binding Path=Title}" 
-        Height="450" 
-        Width="800">
+        Height="650" 
+        Width="1400">
 
     <Window.DataContext>
         <vm:MainWindowViewModel/>
@@ -111,7 +111,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem HorizontalAlignment="Left" Width="69">
+            <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <fa5:SvgAwesome Icon="Solid_ChartLine" Height="14" Foreground="RoyalBlue"/>
@@ -128,6 +128,31 @@
                                     DataFieldY="YValue"
                                     Color="MediumVioletRed"/>
                 </oxy:Plot>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <fa5:SvgAwesome Icon="Solid_Users" Height="14" Foreground="Maroon"/>
+                        <TextBlock Text="Студенты" Margin="3 0 0 0"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Grid.Row="0" Grid.Column="0"
+                              Header="Группы">
+                        <ListBox ItemsSource="{Binding Groups}"
+                                 DisplayMemberPath="Name"/>
+                    </GroupBox>
+                    <GroupBox Grid.Row="0" Grid.Column="1"
+                              Header="Студенты">
+                        <DataGrid>
+                            
+                        </DataGrid>
+                    </GroupBox>
+                </Grid>
             </TabItem>
         </TabControl>
     </DockPanel>

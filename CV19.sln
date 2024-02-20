@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CV19", "CV19\CV19.csproj", "{C8889D9A-5142-4CE3-9515-250346BCCD95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CV19", "CV19\CV19.csproj", "{C8889D9A-5142-4CE3-9515-250346BCCD95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CV19.Cli", "Tests\CV19.Cli\CV19.Cli.csproj", "{256C7CD4-5978-4E5C-9BEB-A8147CBF9D2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CV19.Cli", "Tests\CV19.Cli\CV19.Cli.csproj", "{256C7CD4-5978-4E5C-9BEB-A8147CBF9D2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CV19.Wpf.Test", "Tests\CV19.Wpf.Test\CV19.Wpf.Test.csproj", "{49290120-5603-4D05-B809-5DCEF04D26A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CV19.Wpf.Test", "Tests\CV19.Wpf.Test\CV19.Wpf.Test.csproj", "{49290120-5603-4D05-B809-5DCEF04D26A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
