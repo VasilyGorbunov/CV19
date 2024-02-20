@@ -11,10 +11,24 @@ namespace CV19.ViewModels
     internal class MainWindowViewModel : ViewModelBase
     {
         public ObservableCollection<Group> Groups { get; }
+        public object[] CompositeCollection { get; }
+
 
 
         #region Properties
 
+
+
+        #region SelectedCompositeValue : object - Выбранное композитное значение
+        /// <summary>
+        /// Выбранное композитное значение
+        /// </summary>
+        private object _SelectedCompositeValue;
+        /// <summary>
+        /// Выбранное композитное значение
+        /// </summary>
+        public object SelectedCompositeValue { get => _SelectedCompositeValue; set => Set(ref _SelectedCompositeValue, value); }
+        #endregion
 
 
         #region SelectedGroup : Group - Выбранная группа студентов
@@ -33,7 +47,7 @@ namespace CV19.ViewModels
         /// <summary>
         /// Выбранная вкладка в TabControl
         /// </summary>
-        private int _SelectedPageIndex = 2;
+        private int _SelectedPageIndex = 3;
         /// <summary>
         /// Выбранная вкладка в TabControl
         /// </summary>
@@ -141,6 +155,18 @@ namespace CV19.ViewModels
             });
 
             Groups = new ObservableCollection<Group>(groups);
+            #endregion
+
+            #region Composite Collection
+            var data_list = new List<object>();
+            data_list.Add("Hello world!");
+            data_list.Add(42);
+
+            var group = Groups[1];
+            data_list.Add(group);
+            data_list.Add(group.Students[0]);
+
+            CompositeCollection = data_list.ToArray();
             #endregion
         }
     }
