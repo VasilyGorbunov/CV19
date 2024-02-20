@@ -147,9 +147,15 @@
                         <ListBox ItemsSource="{Binding Groups}"
                                  SelectedItem="{Binding SelectedGroup}"
                                  SelectedIndex="0">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                                   
+                                </Style>
+                            </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="decanat:Group">
-                                    <StackPanel Orientation="Horizontal" Background="Aquamarine" >
+                                    <StackPanel Orientation="Horizontal" Background="Aqua">
                                         <TextBlock Text="{Binding Name}"/>
                                         <TextBlock Text="{Binding Students.Count, StringFormat='({0})'}"/>
                                     </StackPanel>
