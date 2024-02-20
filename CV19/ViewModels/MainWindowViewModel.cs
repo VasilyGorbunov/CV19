@@ -2,12 +2,7 @@
 using CV19.Models;
 using CV19.Models.Decanat;
 using CV19.ViewModels.Base;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -20,6 +15,18 @@ namespace CV19.ViewModels
 
         #region Properties
 
+
+
+        #region SelectedGroup : Group - Выбранная группа студентов
+        /// <summary>
+        /// Выбранная группа студентов
+        /// </summary>
+        private Group _SelectedGroup;
+        /// <summary>
+        /// Выбранная группа студентов
+        /// </summary>
+        public Group SelectedGroup { get => _SelectedGroup; set => Set(ref _SelectedGroup, value); }
+        #endregion
 
 
         #region SelectedPageIndex : int - Выбранная вкладка в TabControl
