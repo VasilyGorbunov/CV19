@@ -127,14 +127,17 @@ namespace CV19.ViewModels
                 Name = $"Name {student_index}",
                 Surname = $"Surname {student_index}",
                 Patronymic = $"Patronymic {student_index}",
+                Description = $"Description {student_index++}",
                 Birthday = DateTime.Now,
-                Rating = 0
+                Rating = 0,
+                
             });
 
             var groups = Enumerable.Range(1, 20).Select(i => new Group
             { 
                 Name = $"Группа {i}",
-                Students = new ObservableCollection<Student>(students)
+                Students = new ObservableCollection<Student>(students),
+                Description = $"Description {i}"
             });
 
             Groups = new ObservableCollection<Group>(groups);
