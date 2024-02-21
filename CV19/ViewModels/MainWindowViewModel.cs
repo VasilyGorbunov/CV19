@@ -138,7 +138,11 @@ namespace CV19.ViewModels
         private void OnDeleteGroupCommandExecuted(object p)
         {
             if (p is not Group group) return;
+
+            var group_index = Groups.IndexOf(group);
             Groups.Remove(group);
+            if (group_index < Groups.Count)
+                SelectedGroup = Groups[group_index];
         } 
         #endregion
 
