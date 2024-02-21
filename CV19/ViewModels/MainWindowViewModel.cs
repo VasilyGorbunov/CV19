@@ -5,6 +5,7 @@ using CV19.ViewModels.Base;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace CV19.ViewModels
 {
@@ -47,7 +48,7 @@ namespace CV19.ViewModels
         /// <summary>
         /// Выбранная вкладка в TabControl
         /// </summary>
-        private int _SelectedPageIndex = 3;
+        private int _SelectedPageIndex = 2;
         /// <summary>
         /// Выбранная вкладка в TabControl
         /// </summary>
@@ -110,6 +111,37 @@ namespace CV19.ViewModels
         }
         #endregion
 
+        #region CreateGroupCommand - создание новой группы
+        public ICommand CreateGroupCommand { get; }
+
+        private bool CanCreateGroupCommandExecute(object p) => true;
+
+        private void OnCreateGroupCommandExecuted(object p)
+        {
+            var group_max_index = Groups.Count + 1;
+            var new_group = new Group()
+            {
+                Name = $"Группа {group_max_index}",
+                Students = new ObservableCollection<Student>()
+
+            };
+
+            Groups.Add(new_group);
+        } 
+        #endregion
+
+        #region DeleteGroupCommand - удаление группы
+        public ICommand DeleteGroupCommand { get; }
+
+        private bool CanDeleteGroupCommandExecute(object p) => p is Group group && Groups.Contains(group);
+
+        private void OnDeleteGroupCommandExecuted(object p)
+        {
+            if (p is not Group group) return;
+            Groups.Remove(group);
+        } 
+        #endregion
+
         #endregion
 
         public MainWindowViewModel()
@@ -117,6 +149,8 @@ namespace CV19.ViewModels
             #region Commands
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
             ChangeTabIndexCommand = new LambdaCommand(OnChangeTabIndexCommandExecuted, CanChangeTabIndexCommandExecute);
+            CreateGroupCommand = new LambdaCommand(OnCreateGroupCommandExecuted, CanCreateGroupCommandExecute);
+            DeleteGroupCommand = new LambdaCommand(OnDeleteGroupCommandExecuted, CanDeleteGroupCommandExecute);
             #endregion
 
             #region Генерация тестовых данных для графика
