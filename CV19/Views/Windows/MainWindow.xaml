@@ -9,6 +9,7 @@
         xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:oxy="http://oxyplot.org/wpf/contrib"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
         Title="{Binding Path=Title}" 
         Height="650" 
@@ -150,7 +151,7 @@
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                                   
+
                                 </Style>
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
@@ -232,18 +233,70 @@
                         <ColumnDefinition Width="250"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ListBox Grid.Row="0" Grid.Column="0" 
-                             ItemsSource="{Binding CompositeCollection}"
-                             SelectedItem="{Binding SelectedCompositeValue}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding}"/>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
 
-                    <GroupBox Grid.Row="0" Grid.Column="1"
-                              Header="Выбранные данные">
+                    <GroupBox>
+                        <GroupBox.Header>
+                            <TextBlock Text="Элементы"/>
+                        </GroupBox.Header>
+                        <GroupBox.Resources>
+                            <DataTemplate DataType="{x:Type decanat:Group}">
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type decanat:Student}">
+                                <TextBlock Text="{Binding Name, StringFormat=Студент {0}}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type system:String}">
+                                <TextBlock>
+                                    <Run Foreground="Red" FontWeight="DemiBold">Строка: </Run>
+                                    <TextBlock Text="{Binding}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type system:Int32}">
+                                <TextBlock>
+                                    <Run Foreground="Teal" FontWeight="DemiBold">Число: </Run>
+                                    <TextBlock Text="{Binding}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GroupBox.Resources>
+                        <ListBox Grid.Row="0" Grid.Column="0" 
+                                 ItemsSource="{Binding CompositeCollection}"
+                                 SelectedItem="{Binding SelectedCompositeValue}"/>
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="0" Grid.Column="1">
+                        <GroupBox.Header>
+                            <TextBlock Text="Выбранные данные"/>
+                        </GroupBox.Header>
+                        <GroupBox.Resources>
+                            <DataTemplate DataType="{x:Type decanat:Group}">
+                                <TextBlock Text="{Binding Name}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="30"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type decanat:Student}">
+                                <TextBlock Text="{Binding Name, StringFormat=Студент {0}}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="30"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type system:String}">
+                                <TextBlock HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="30">
+                                    <Run Foreground="Red" FontWeight="DemiBold">Строка: </Run>
+                                    <TextBlock Text="{Binding}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type system:Int32}">
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="30">
+                                    <Run Foreground="Teal" FontWeight="DemiBold">Число: </Run>
+                                    <TextBlock Text="{Binding}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GroupBox.Resources>
                         <ContentControl Content="{Binding SelectedCompositeValue}"/>
                     </GroupBox>
                 </Grid>
