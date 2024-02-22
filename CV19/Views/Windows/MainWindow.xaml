@@ -155,9 +155,10 @@
                                         <Setter Property="Padding" Value="3 5"/>
                                     </Style>
                                 </UniformGrid.Resources>
-                                <Button Content="Добавить" 
-                                        Style="{StaticResource PrimaryBtn}"
+                                <Button Style="{StaticResource CheckButtonStyle}"
+                                        Content="Добавить"
                                         Command="{Binding CreateGroupCommand}"/>
+
                                 <Button Content="Удалить" 
                                         Style="{StaticResource DangerBtn}"
                                         Command="{Binding DeleteGroupCommand}"
@@ -286,6 +287,11 @@
                         </GroupBox.Resources>
                         <ContentControl Content="{Binding SelectedCompositeValue}"/>
                     </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Test" HorizontalAlignment="Right" Width="32">
+                <Grid>
+                    <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="610,88,0,0" VerticalAlignment="Top" Height="38" Width="165" Style="{StaticResource CheckButtonStyle}"/>
                 </Grid>
             </TabItem>
         </TabControl>
