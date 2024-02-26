@@ -141,7 +141,8 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="183*" />
+                        <ColumnDefinition Width="961*"/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Row="0" Grid.Column="0"
                               Header="Группы">
@@ -181,7 +182,15 @@
                             </UniformGrid>
                             <ListBox ItemsSource="{Binding Source={StaticResource GroupsCollection}}"
                                      SelectedItem="{Binding SelectedGroup}"
-                                     SelectedIndex="0">
+                                     SelectedIndex="0"
+                                     VirtualizingPanel.IsContainerVirtualizable="True"
+                                     VirtualizingPanel.IsVirtualizing="True"
+                                     VirtualizingPanel.VirtualizationMode="Recycling">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
                                         <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
@@ -190,7 +199,7 @@
                                 </ListBox.ItemContainerStyle>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="decanat:Group">
-                                        
+
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{Binding Name}" x:Name="TextView"/>
                                             <TextBlock Text="{Binding Students.Count, StringFormat='({0})'}"
@@ -214,7 +223,7 @@
                     </GroupBox>
                     <GroupBox Grid.Row="0" Grid.Column="1"
                               Header="{Binding SelectedGroup.Name, FallbackValue='Студенты', TargetNullValue='Группа не выбрана'
-                              }">
+                              }" Grid.ColumnSpan="2">
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top" Margin="0 5">
                                 <fa5:SvgAwesome Height="14" Icon="Solid_Search" Foreground="Gray" Margin="0 0 5 0"/>
@@ -378,6 +387,43 @@
                         </Button.Triggers>
 
                     </Button>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Тестирование виртуализации">
+                <Grid>
+                    <TextBlock Text="{Binding Source={x:Static l:App.IsDesignMode}}"/>
+                    <ListBox HorizontalAlignment="Left"
+                             Width="200"
+                             Margin="30"
+                             ItemsSource="{Binding TestStudents}"
+                             VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.VirtualizationMode="Recycling">
+
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="decanat:Student">
+                                <Border BorderBrush="Crimson"
+                                        BorderThickness="2"
+                                        CornerRadius="10"
+                                        Padding="20">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Surname}" ToolTip="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Surname}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Grid>
             </TabItem>
         </TabControl>

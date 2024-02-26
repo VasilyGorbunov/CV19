@@ -86,6 +86,13 @@ namespace CV19.ViewModels
         public string Status { get => _Status; set => Set(ref _Status, value); }
         #endregion
 
+        public IEnumerable<Student> TestStudents => Enumerable.Range(1, App.IsDesignMode ? 10 : 100_000)
+            .Select(x => new Student
+            {
+                Name = $"Имя {x}",
+                Surname = $"Фамилия {x}"
+            });
+
         #endregion
 
         #region Commands
