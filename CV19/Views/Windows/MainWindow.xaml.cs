@@ -2,12 +2,7 @@
 
 namespace CV19.Views.Windows;
 
-public partial class MainWindow : Window
+public partial class MainWindow
 {
-    public MainWindow()
-    {
-        InitializeComponent();
-    }
-
- 
+    public MainWindow() => InitializeComponent();
 }
