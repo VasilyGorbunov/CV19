@@ -10,6 +10,7 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:oxy="http://oxyplot.org/wpf/contrib"
         xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="{Binding Path=Title}"
         Height="650"
@@ -150,8 +151,11 @@
                             <DockPanel.Resources>
                                 <CollectionViewSource x:Key="GroupsCollection"
                                                       Source="{Binding Groups}" 
-                                                      Filter="GroupsCollectionFilter"
-                                                      />
+                                                      Filter="GroupsCollectionFilter">
+                                    <CollectionViewSource.SortDescriptions>
+                                        <componentModel:SortDescription PropertyName="Name" Direction="Descending"/>
+                                    </CollectionViewSource.SortDescriptions>
+                                </CollectionViewSource>
                             </DockPanel.Resources>
                             <DockPanel DockPanel.Dock="Top" Margin="0 5">
                                 <fa5:SvgAwesome Height="14" Icon="Solid_Search" Foreground="Gray" Margin="0 0 5 0"/>
@@ -227,9 +231,9 @@
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top" Margin="0 5">
                                 <fa5:SvgAwesome Height="14" Icon="Solid_Search" Foreground="Gray" Margin="0 0 5 0"/>
-                                <TextBox/>
+                                <TextBox Text="{Binding StudentFilterText, UpdateSourceTrigger=PropertyChanged}"/>
                             </DockPanel>
-                            <DataGrid ItemsSource="{Binding SelectedGroup.Students}"
+                            <DataGrid ItemsSource="{Binding SelectedGroupStudents}"
                                       AutoGenerateColumns="False"
                                       CanUserAddRows="False"
                                       GridLinesVisibility="Vertical"
