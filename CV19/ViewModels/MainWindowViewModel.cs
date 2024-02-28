@@ -102,7 +102,7 @@ namespace CV19.ViewModels
         /// <summary>
         /// Выбранная вкладка в TabControl
         /// </summary>
-        private int _SelectedPageIndex = 2;
+        private int _SelectedPageIndex = 6;
         /// <summary>
         /// Выбранная вкладка в TabControl
         /// </summary>
@@ -146,6 +146,23 @@ namespace CV19.ViewModels
                 Name = $"Имя {x}",
                 Surname = $"Фамилия {x}"
             });
+
+        public DirectoryViewModel DiskRootDir { get; } = new DirectoryViewModel("c:\\");
+
+        #region Выбранная директория
+
+        private DirectoryViewModel _SelectedDirectory;
+
+        /// <summary>
+        /// Выбранная директория
+        /// </summary>
+        public DirectoryViewModel SelectedDirectory
+        {
+            get => _SelectedDirectory;
+            set => Set(ref _SelectedDirectory, value);
+        }
+
+        #endregion
 
         #endregion
 
