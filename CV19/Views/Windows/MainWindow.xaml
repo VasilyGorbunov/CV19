@@ -448,23 +448,23 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>-->
-                        <TreeView ItemsSource="{Binding DiskRootDir.DirectoryItems}">
-
-                            <TreeView.ItemTemplate>
-                                <!--<DataTemplate>
+                        <GroupBox.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type vm:DirectoryViewModel}"
+                                                      ItemsSource="{Binding DirectoryItems}">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:SvgAwesome Height="12" Icon="Regular_Folder" Margin="3 0" Foreground="DarkOrange"/>
                                     <TextBlock Text="{Binding Name}"
                                                ToolTip="{Binding CreationTime}"/>
-                                </DataTemplate>-->
-                                <HierarchicalDataTemplate DataType="{x:Type vm:DirectoryViewModel}"
-                                                          ItemsSource="{Binding DirectoryItems}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <fa5:SvgAwesome Height="12" Icon="Regular_Folder" Margin="3 0" Foreground="DarkOrange"/>
-                                            <TextBlock Text="{Binding Name}"
-                                                       ToolTip="{Binding CreationTime}"/>
-                                    </StackPanel>
-                                </HierarchicalDataTemplate>
-                            </TreeView.ItemTemplate>
-                        </TreeView>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                            <DataTemplate DataType="{x:Type vm:FileViewModel}">
+                                <StackPanel Orientation="Horizontal" ToolTip="{Binding CreationTime}">
+                                    <fa5:SvgAwesome Height="12" Icon="Regular_File" Foreground="BlueViolet"/>
+                                    <TextBlock Text="{Binding Name}" Margin="5 0 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GroupBox.Resources>
+                        <TreeView ItemsSource="{Binding DiskRootDir.DirectoryItems}"/>
                     </GroupBox>
 
                     <GroupBox Grid.Row="0" Grid.Column="1" Header="Файлы">
