@@ -3,7 +3,9 @@ using CV19.Models;
 using CV19.Models.Decanat;
 using CV19.ViewModels.Base;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -40,7 +42,59 @@ namespace CV19.ViewModels
         /// <summary>
         /// Выбранная группа студентов
         /// </summary>
-        public Group SelectedGroup { get => _SelectedGroup; set => Set(ref _SelectedGroup, value); }
+        public Group SelectedGroup { get => _SelectedGroup;
+            set
+            {
+                if (!Set(ref _SelectedGroup, value)) return;
+                _SelectedGroupStudents.Source = value?.Students;
+                OnPropertyChanged(nameof(SelectedGroupStudents));
+            }
+        }
+        #endregion
+
+        #region Текст фильтрации студентов
+
+        private string _StudentFilterText;
+
+        /// <summary>
+        /// Текст фильтрации студентов
+        /// </summary>
+        public string StudentFilterText
+        {
+            get => _StudentFilterText;
+            set
+            {
+                if (!Set(ref _StudentFilterText, value)) return;
+                _SelectedGroupStudents.View.Refresh();
+            }
+        }
+
+        #endregion
+
+        #region SelectedGroupStudent
+        private readonly CollectionViewSource _SelectedGroupStudents = new CollectionViewSource();
+
+        public ICollectionView SelectedGroupStudents => _SelectedGroupStudents?.View;
+
+        private void OnStudentsFiltered(object sender, FilterEventArgs e)
+        {
+            if(!(e.Item is Student student)) return;
+
+            var filter_text = _StudentFilterText;
+            if(string.IsNullOrWhiteSpace(filter_text)) return;
+
+            if (student.Name is null || student.Surname is null)
+            {
+                e.Accepted = false;
+                return;
+            }
+
+            if(student.Name.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+            if(student.Surname.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+
+            e.Accepted = false;
+
+        } 
         #endregion
 
 
@@ -48,7 +102,7 @@ namespace CV19.ViewModels
         /// <summary>
         /// Выбранная вкладка в TabControl
         /// </summary>
-        private int _SelectedPageIndex = 2;
+        private int _SelectedPageIndex = 6;
         /// <summary>
         /// Выбранная вкладка в TabControl
         /// </summary>
@@ -84,6 +138,30 @@ namespace CV19.ViewModels
         private string _Status = "Готов!";
         /// <summary>Статус программы</summary>
         public string Status { get => _Status; set => Set(ref _Status, value); }
+        #endregion
+
+        public IEnumerable<Student> TestStudents => Enumerable.Range(1, App.IsDesignMode ? 10 : 100_000)
+            .Select(x => new Student
+            {
+                Name = $"Имя {x}",
+                Surname = $"Фамилия {x}"
+            });
+
+        public DirectoryViewModel DiskRootDir { get; } = new DirectoryViewModel("c:\\");
+
+        #region Выбранная директория
+
+        private DirectoryViewModel _SelectedDirectory;
+
+        /// <summary>
+        /// Выбранная директория
+        /// </summary>
+        public DirectoryViewModel SelectedDirectory
+        {
+            get => _SelectedDirectory;
+            set => Set(ref _SelectedDirectory, value);
+        }
+
         #endregion
 
         #endregion
@@ -206,6 +284,16 @@ namespace CV19.ViewModels
 
             CompositeCollection = data_list.ToArray();
             #endregion
+
+            #region фильтрация студентов
+
+            _SelectedGroupStudents.Filter += OnStudentsFiltered;
+            //_SelectedGroupStudents.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Descending));
+            //_SelectedGroupStudents.GroupDescriptions.Add(new PropertyGroupDescription("Name"));
+
+            #endregion
         }
+
+        
     }
 }

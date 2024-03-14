@@ -10,6 +10,7 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:oxy="http://oxyplot.org/wpf/contrib"
         xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="{Binding Path=Title}"
         Height="650"
@@ -141,11 +142,26 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="183*" />
+                        <ColumnDefinition Width="961*"/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Row="0" Grid.Column="0"
                               Header="Группы">
                         <DockPanel>
+                            <DockPanel.Resources>
+                                <CollectionViewSource x:Key="GroupsCollection"
+                                                      Source="{Binding Groups}" 
+                                                      Filter="GroupsCollectionFilter">
+                                    <CollectionViewSource.SortDescriptions>
+                                        <componentModel:SortDescription PropertyName="Name" Direction="Descending"/>
+                                    </CollectionViewSource.SortDescriptions>
+                                </CollectionViewSource>
+                            </DockPanel.Resources>
+                            <DockPanel DockPanel.Dock="Top" Margin="0 5">
+                                <fa5:SvgAwesome Height="14" Icon="Solid_Search" Foreground="Gray" Margin="0 0 5 0"/>
+                                <TextBox Name="GroupNameFilterText"
+                                         TextChanged="OnGroupsFilterTextChanged"/>
+                            </DockPanel>
                             <UniformGrid DockPanel.Dock="Bottom"
                                          Rows="1"
                                          Margin="0 3">
@@ -168,9 +184,17 @@
                                         Command="{Binding DeleteGroupCommand}"
                                         CommandParameter="{Binding SelectedGroup}" />
                             </UniformGrid>
-                            <ListBox ItemsSource="{Binding Groups}"
+                            <ListBox ItemsSource="{Binding Source={StaticResource GroupsCollection}}"
                                      SelectedItem="{Binding SelectedGroup}"
-                                     SelectedIndex="0">
+                                     SelectedIndex="0"
+                                     VirtualizingPanel.IsContainerVirtualizable="True"
+                                     VirtualizingPanel.IsVirtualizing="True"
+                                     VirtualizingPanel.VirtualizationMode="Recycling">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
                                         <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
@@ -179,7 +203,7 @@
                                 </ListBox.ItemContainerStyle>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="decanat:Group">
-                                        
+
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{Binding Name}" x:Name="TextView"/>
                                             <TextBlock Text="{Binding Students.Count, StringFormat='({0})'}"
@@ -203,58 +227,64 @@
                     </GroupBox>
                     <GroupBox Grid.Row="0" Grid.Column="1"
                               Header="{Binding SelectedGroup.Name, FallbackValue='Студенты', TargetNullValue='Группа не выбрана'
-                              }">
-                        <DataGrid ItemsSource="{Binding SelectedGroup.Students}"
-                                  AutoGenerateColumns="False"
-                                  CanUserAddRows="False"
-                                  GridLinesVisibility="Vertical"
-                                  VerticalGridLinesBrush="LightCyan"
-                                  AlternatingRowBackground="Lavender">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Фамилия"
+                              }" Grid.ColumnSpan="2">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top" Margin="0 5">
+                                <fa5:SvgAwesome Height="14" Icon="Solid_Search" Foreground="Gray" Margin="0 0 5 0"/>
+                                <TextBox Text="{Binding StudentFilterText, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
+                            <DataGrid ItemsSource="{Binding SelectedGroupStudents}"
+                                      AutoGenerateColumns="False"
+                                      CanUserAddRows="False"
+                                      GridLinesVisibility="Vertical"
+                                      VerticalGridLinesBrush="LightCyan"
+                                      AlternatingRowBackground="Lavender">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Фамилия"
                                                     Binding="{Binding Surname}"
                                                     IsReadOnly="True" />
-                                <DataGridTextColumn Header="Имя"
+                                    <DataGridTextColumn Header="Имя"
                                                     Binding="{Binding Name}"
                                                     IsReadOnly="True" />
-                                <DataGridTextColumn Header="Отчество"
+                                    <DataGridTextColumn Header="Отчество"
                                                     Binding="{Binding Patronymic}"
                                                     IsReadOnly="True" />
-                                <DataGridTextColumn Header="Рейтинг"
+                                    <DataGridTextColumn Header="Рейтинг"
                                                     Binding="{Binding Rating}"
                                                     IsReadOnly="True" />
-                                <!--<DataGridTextColumn Header="Дата рождения" Binding="{
+                                    <!--<DataGridTextColumn Header="Дата рождения" Binding="{
                                     Binding Birthday,
                                     StringFormat=dd.MM.yyyy
                                     }"/>-->
-                                <DataGridTemplateColumn Header="Дата рождения">
-                                    <!--<DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn Header="Дата рождения">
+                                        <!--<DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate DataType="decanat:Student">
                                             <DatePicker SelectedDate="{Binding Birthday}"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>-->
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate DataType="decanat:Student">
-                                            <TextBlock Text="{Binding Birthday, StringFormat=dd.MM.yyyy}" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate DataType="decanat:Student">
-                                            <DatePicker SelectedDate="{Binding Birthday}" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Группа"
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="decanat:Student">
+                                                <TextBlock Text="{Binding Birthday, StringFormat=dd.MM.yyyy}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate DataType="decanat:Student">
+                                                <DatePicker SelectedDate="{Binding Birthday}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Группа"
                                                     Binding="{
                                     Binding DataContext.SelectedGroup.Name, 
                                     RelativeSource={RelativeSource AncestorType=DataGrid} 
                                     }"
                                                     IsReadOnly="True" />
-                                <DataGridTextColumn Header="Описание"
+                                    <DataGridTextColumn Header="Описание"
                                                     Binding="{Binding Description}"
                                                     Width="*" />
-                            </DataGrid.Columns>
-                        </DataGrid>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
                     </GroupBox>
                 </Grid>
             </TabItem>
@@ -361,6 +391,88 @@
                         </Button.Triggers>
 
                     </Button>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Тестирование виртуализации">
+                <Grid>
+                    <TextBlock Text="{Binding Source={x:Static l:App.IsDesignMode}}"/>
+                    <ListBox HorizontalAlignment="Left"
+                             Width="200"
+                             Margin="30"
+                             ItemsSource="{Binding TestStudents}"
+                             VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.VirtualizationMode="Recycling">
+
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="decanat:Student">
+                                <Border BorderBrush="Crimson"
+                                        BorderThickness="2"
+                                        CornerRadius="10"
+                                        Padding="20">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Surname}" ToolTip="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Surname}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Файловая система">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <GroupBox Grid.Row="0" Grid.Column="0" Header="Директории">
+                        <!--<ListBox ItemsSource="{Binding DiskRootDir.DirectoryItems}"
+                                 SelectedItem="{Binding SelectedDirectory}"
+                                 SelectedIndex="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:DirectoryViewModel}">
+                                    <TextBlock Text="{Binding Name}"
+                                               ToolTip="{Binding CreationTime}"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>-->
+                        <GroupBox.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type vm:DirectoryViewModel}"
+                                                      ItemsSource="{Binding DirectoryItems}">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:SvgAwesome Height="12" Icon="Regular_Folder" Margin="3 0" Foreground="DarkOrange"/>
+                                    <TextBlock Text="{Binding Name}"
+                                               ToolTip="{Binding CreationTime}"/>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                            <DataTemplate DataType="{x:Type vm:FileViewModel}">
+                                <StackPanel Orientation="Horizontal" ToolTip="{Binding CreationTime}">
+                                    <fa5:SvgAwesome Height="12" Icon="Regular_File" Foreground="BlueViolet"/>
+                                    <TextBlock Text="{Binding Name}" Margin="5 0 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GroupBox.Resources>
+                        <TreeView ItemsSource="{Binding DiskRootDir.DirectoryItems}"/>
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="0" Grid.Column="1" Header="Файлы">
+                        <ListBox ItemsSource="{Binding SelectedDirectory.Files}">
+                            
+                        </ListBox>
+                    </GroupBox>
+
                 </Grid>
             </TabItem>
         </TabControl>
